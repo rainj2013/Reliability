@@ -1,6 +1,5 @@
 package edu.gdut.service;
 
-import edu.gdut.service.DS.Evidence;
 import edu.gdut.service.DS.EvidenceDS;
 
 import java.util.*;
@@ -9,7 +8,7 @@ import java.util.Map.Entry;
 /**
  * @author rainj2013 yangyujian25@gmail.com
  * @ClassName IRE
- * @Description TODO
+ * @Description IRE计算
  * @date 2016年10月31日 上午11:09:51
  */
 public class IRE {
