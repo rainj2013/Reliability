@@ -1,7 +1,11 @@
 package edu.gdut.service.GA;
 
 import java.util.List;
-
+/**
+ * Author:  rainj2013
+ * Email:  yangyujian25@gmail.com
+ * Date:  16-11-8
+ */
 public class Population {
     Individual[] individuals;
 

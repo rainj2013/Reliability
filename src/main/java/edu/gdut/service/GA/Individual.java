@@ -5,9 +5,14 @@ public class Individual {
     static int defaultGeneLength = 64;
     // 基因序列
     private byte[] genes = new byte[defaultGeneLength];
-    // 个体的适应值
+    // 个体的适应度
     private double fitness = 0;
+    //适应度计算类
+    private static FitnessCal fitnessCal;
 
+    public static void setFitnessCal(FitnessCal fitnessCal) {
+        Individual.fitnessCal = fitnessCal;
+    }
     // 创建一个随机基因的个体
     public Individual(){
         for (int i = 0; i < size(); i++) {
@@ -34,16 +39,18 @@ public class Individual {
         genes[index] = value;
         fitness = 0;
     }
+    public byte[] getGenes() {
+        return genes;
+    }
 
     public int size() {
         return genes.length;
     }
 
-    //基因对应的适应度
+    //适应度
     public double getFitness() {
         if (fitness == 0) {
-            int value = Integer.parseInt(toString(), 2);// 十进制数值
-            fitness = Math.pow(value, 3) - 60 * Math.pow(value, 2) + 900 * value + 100;
+            fitness = fitnessCal.getFitness(this);
         }
         return fitness;
     }
