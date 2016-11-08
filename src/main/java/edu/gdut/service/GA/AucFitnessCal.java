@@ -1,6 +1,7 @@
 package edu.gdut.service.GA;
 
 import edu.gdut.service.AUC;
+import edu.gdut.service.Common;
 import edu.gdut.util.ArraysUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  * Date:  16-11-8
  * 以auc值衡量适应度
  */
-public class AucFitness extends Common implements FitnessCal{
+public class AucFitnessCal extends Common implements FitnessCal{
     @Autowired
     private AUC auc;
 
@@ -23,7 +24,7 @@ public class AucFitness extends Common implements FitnessCal{
     private final Map<String, List<Double[]>> trainingData;//训练集数据
     private final List<Integer> label;//训练集标签
 
-    public AucFitness(int geneLength, Map<String, List<Double[]>> trainingData, List<Integer> label) {
+    public AucFitnessCal(int geneLength, Map<String, List<Double[]>> trainingData, List<Integer> label) {
         this.geneLength = geneLength;
         this.trainingData = trainingData;
         this.label = label;

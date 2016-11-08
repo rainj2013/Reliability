@@ -1,6 +1,5 @@
 package edu.gdut.service;
 
-import edu.gdut.service.GA.Common;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -11,7 +10,6 @@ import java.util.*;
  * @Description IRE计算
  * @date 2016年10月31日 上午11:09:51
  */
-
 @Component
 public class IRE extends Common{
     private static double threshold = 0.81;

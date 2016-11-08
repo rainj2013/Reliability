@@ -21,7 +21,7 @@ public class CRE extends Common{
     private final int genes = 7;//基因（feature）个数
     private final int geneLength = 14;//单个基因转成二进制后的长度，保留4位有效数字的话，2^14够存，所以就14位吧
     private final int initPopSize = 40;//初始化种群的个体数
-    private final int maxGenerationCount = 50;//遗传算法计算代数
+    private final int maxGenerationCount = 5000;//遗传算法计算代数
 
     /**
      * @Description 对Training数据集分别使用随机产生的权重、 IRE方法产生的权重作初始权重，运用遗传算法分别得到feature的最优权重
@@ -35,7 +35,7 @@ public class CRE extends Common{
         //IRE方法计算每个feature的权重
         final List<Double> ireFeatureWeights = ire.featureWeights(aucList);
         //创建适应度计算类
-        FitnessCal fitnessCal =  new AucFitness(geneLength, trainingData, label);
+        FitnessCal fitnessCal =  new AucFitnessCal(geneLength, trainingData, label);
         //设置适应度计算类
         Individual.setFitnessCal(fitnessCal);
         //设置总基因长度

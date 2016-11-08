@@ -33,12 +33,12 @@ public class GATest {
 
         // 不断迭代，进行进化操作，直到达到指定的代数，打印最优的基因和对应的最优适应度
         int generationCount = 0;
-        int maxGenerationCount = 50;
+        int maxGenerationCount = 5000;
         List<Population> pList = new ArrayList<>();
         while (generationCount < maxGenerationCount) {
             generationCount++;
-            System.out.println("Generation: " + generationCount + " Fittest: "
-                    + myPop.getFittest().getFitness());
+            /*System.out.println("Generation: " + generationCount + " Fittest: "
+                    + myPop.getFittest().getFitness());*/
             myPop = GA.evolvePopulation(myPop);
             pList.add(myPop);
         }

@@ -1,6 +1,7 @@
-package edu.gdut.service.GA;
+package edu.gdut.service;
 
 import edu.gdut.service.DS.EvidenceDS;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Map;
  * Email:  yangyujian25@gmail.com
  * Date:  16-11-8
  */
+@Component
 public class Common {
     /**
      * @Description 对数据集进行加权
