@@ -16,19 +16,20 @@ import java.util.*;
 @Component
 public class AUC {
     /**
-     * @Description 计算单个feature的fraud焦元的AUC值
+     * @Description 计算单个feature的的AUC值
      * @param label 数据集标签
      * @param map 数据集
+     * @param element 焦元
      * @return fraud焦元的AUC值
      */
-    public Double auc(List<Integer> label ,Map<String, Double[]> map) {
+    public Double auc(List<Integer> label ,Map<String, Double[]> map, int element) {
         Map<String, List<Double[]>> temp = new HashMap<>();
         for(Map.Entry<String, Double[]> e: map.entrySet()){
             List<Double[]> list = new ArrayList<>();
             list.add(e.getValue());
             temp.put(e.getKey(), list);
         }
-        List<Double> result = auc(temp,label);
+        List<Double> result = auc(temp, label, element);
         return result.get(0);
     }
 
@@ -36,9 +37,10 @@ public class AUC {
      * @Description 计算多个feature的fraud焦元的AUC值
      * @param map 数据集
      * @param label 数据集标签
+     * @param element 焦元
      * @return 每个feature的fraud焦元的AUC值
      */
-    public List<Double> auc(Map<String, List<Double[]>> map, List<Integer> label) {
+    public List<Double> auc(Map<String, List<Double[]>> map, List<Integer> label, int element) {
         int objectSize = label.size();
         int featureSize = map.get("1").size();
         List<Double> aucList = new ArrayList<>();
@@ -50,7 +52,7 @@ public class AUC {
             for (int objectId = 1; objectId < objectSize + 1; objectId++) {
                 //取每个object中其中一个feature的fraud值
                 features.add(new AUCBean(
-                        map.get(objectId).get(featureId - 1)[0],
+                        map.get(objectId).get(featureId - 1)[element],
                         label.get(objectId - 1) == 1)
                 );
             }

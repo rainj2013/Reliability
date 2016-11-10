@@ -30,8 +30,8 @@ public class CRE extends Common{
      * @return 最佳权重
      */
     public List<Double> optimalWeights(Map<String, List<Double[]>> trainingData, List<Integer> label){
-        //计算训练集每个feature的auc
-        final List<Double> aucList = auc.auc(trainingData, label);
+        //计算训练集每个feature的fraud焦元的auc值
+        final List<Double> aucList = auc.auc(trainingData, label, 0);
         //IRE方法计算每个feature的权重
         final List<Double> ireFeatureWeights = ire.featureWeights(aucList);
         //创建适应度计算类

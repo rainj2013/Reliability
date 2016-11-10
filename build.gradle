@@ -10,27 +10,19 @@ buildscript {
     }
 }
 
-
 apply plugin: 'java'
 apply plugin: 'spring-boot'
 apply plugin: 'application'
 mainClassName = 'edu.gdut.Application'
 
-
 sourceCompatibility = 1.8
 
-configurations {
-    provided.all*.exclude group: 'javax.servlet'
-}
 repositories {
     maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
-}
-
-dependencies {
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
     compile("org.springframework.boot:spring-boot-starter-web:1.4.1.RELEASE")
     compile group: 'org.nutz', name: 'nutz', version: '1.r.58'
