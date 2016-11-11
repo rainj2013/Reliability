@@ -1,8 +1,9 @@
 package edu.gdut.service;
 
 import edu.gdut.service.DS.EvidenceDS;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.Map;
  * Email:  yangyujian25@gmail.com
  * Date:  16-11-8
  */
-@Component
+@Service
 public class Common {
     /**
      * @param Data           数据集

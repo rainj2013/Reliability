@@ -1,7 +1,7 @@
 package edu.gdut.service;
 
 import edu.gdut.domain.AUCBean;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
@@ -13,14 +13,14 @@ import java.util.*;
  * Email:  yangyujian25@gmail.com
  * Date:  16-11-8
  */
-@Component
+@Service
 public class AUC {
     /**
      * @Description 计算单个feature的的AUC值
      * @param label 数据集标签
      * @param map 数据集
      * @param element 焦元
-     * @return fraud焦元的AUC值
+     * @return 指定焦元的AUC值
      */
     public Double auc(List<Integer> label ,Map<String, Double[]> map, int element) {
         Map<String, List<Double[]>> temp = new HashMap<>();
@@ -34,11 +34,11 @@ public class AUC {
     }
 
     /**
-     * @Description 计算多个feature的fraud焦元的AUC值
+     * @Description 计算多个feature的指定焦元的AUC值
      * @param map 数据集
      * @param label 数据集标签
      * @param element 焦元
-     * @return 每个feature的fraud焦元的AUC值
+     * @return 每个feature的指定焦元的AUC值
      */
     public List<Double> auc(Map<String, List<Double[]>> map, List<Integer> label, int element) {
         int objectSize = label.size();
@@ -50,19 +50,25 @@ public class AUC {
             List<AUCBean> features = new ArrayList<>();
 
             for (int objectId = 1; objectId < objectSize + 1; objectId++) {
-                //取每个object中其中一个feature的fraud值
+                //取每个object中其中一个feature对应焦元的值
                 features.add(new AUCBean(
-                        map.get(objectId).get(featureId - 1)[element],
-                        label.get(objectId - 1) == 1)
+                        map.get(objectId).get(featureId - 1)[0]
+                        , map.get(objectId).get(featureId - 1)[1], label.get(objectId - 1) == 1)
                 );
             }
-            //按照fraud值进行排序
+            //按照焦元的值进行排序
             features.sort(new Comparator<AUCBean>() {
                 @Override
                 public int compare(AUCBean o1, AUCBean o2) {
-                    if (o1.getFraud() > o2.getFraud())
-                        return 1;
-                    return -1;
+                    if(element == 0){
+                        if (o1.getFraud() > o2.getFraud())
+                            return 1;
+                        return -1;
+                    }else{
+                        if (o1.getUnFraud() > o2.getUnFraud())
+                            return 1;
+                        return -1;
+                    }
                 }
             });
 
@@ -72,7 +78,7 @@ public class AUC {
 
             for (int i = features.size() - 1; i >= 0; i--) {
                 AUCBean aucBean = features.get(i);
-                if (aucBean.isLable()) {
+                if (element==0&&aucBean.isLabel()) {//对于unFraud焦元来说，正样本是标记为unFraud的
                     zheng += (i + 1);
                     count++;
                 }

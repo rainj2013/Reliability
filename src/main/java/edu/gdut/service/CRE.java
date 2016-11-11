@@ -3,7 +3,8 @@ package edu.gdut.service;
 import edu.gdut.service.GA.*;
 import edu.gdut.util.ArraysUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
@@ -12,16 +13,49 @@ import java.util.*;
  * Email:  yangyujian25@gmail.com
  * Date:  16-11-8
  */
-@Component
+@Service
 public class CRE extends Common{
+    @Qualifier("IRE")
     @Autowired
-    private IRE ire;
+    protected IRE ire;
     @Autowired
-    private AUC auc;
-    private final int genes = 7;//基因（feature）个数
-    private final int geneLength = 14;//单个基因转成二进制后的长度，保留4位有效数字的话，2^14够存，所以就14位吧
-    private final int initPopSize = 40;//初始化种群的个体数
-    private final int maxGenerationCount = 5000;//遗传算法计算代数
+    protected AUC auc;
+    protected int genes = 7;//基因（feature）个数
+    protected int geneLength = 14;//单个基因转成二进制后的长度，保留4位有效数字的话，2^14够存，所以就14位吧
+    protected int initPopSize = 40;//初始化种群的个体数
+    protected int maxGenerationCount = 5000;//遗传算法计算代数
+
+    /**
+     * @Description 设置基因（feature）个数
+     * @param genes 基因个数
+     */
+    public void setGenes(int genes){
+        this.genes = genes;
+    }
+
+    /**
+     * @Description 设置单个基因转成二进制后的长度
+     * @param geneLength 单个基因转成二进制后的长度
+     */
+    public void setGeneLength(int geneLength){
+        this.geneLength = geneLength;
+    }
+
+    /**
+     * @Description 设置初始化种群的个体数
+     * @param initPopSize 初始化种群的个体数
+     */
+    public void setInitPopSize(int initPopSize){
+        this.initPopSize = initPopSize;
+    }
+
+    /**
+     * @Description 设置遗传算法计算代数
+     * @param maxGenerationCount 遗传算法计算代数
+     */
+    public void setMaxGenerationCount(int maxGenerationCount){
+        this.maxGenerationCount = maxGenerationCount;
+    }
 
     /**
      * @Description 对Training数据集分别使用随机产生的权重、 IRE方法产生的权重作初始权重，运用遗传算法分别得到feature的最优权重

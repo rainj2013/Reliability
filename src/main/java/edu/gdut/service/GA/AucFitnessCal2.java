@@ -13,10 +13,10 @@ import java.util.Map;
 /**
  * Author:  rainj2013
  * Email:  yangyujian25@gmail.com
- * Date:  16-11-8
- * 以auc值衡量适应度
+ * Date:  16-11-11 下午9:06
  */
-public class AucFitnessCal extends Common implements FitnessCal{
+public class AucFitnessCal2 extends Common implements FitnessCal{
+
     @Autowired
     private AUC auc;
 
@@ -24,7 +24,7 @@ public class AucFitnessCal extends Common implements FitnessCal{
     private final Map<String, List<Double[]>> trainingData;//训练集数据
     private final List<Integer> label;//训练集标签
 
-    public AucFitnessCal(int geneLength, Map<String, List<Double[]>> trainingData, List<Integer> label) {
+    public AucFitnessCal2(int geneLength, Map<String, List<Double[]>> trainingData, List<Integer> label) {
         this.geneLength = geneLength;
         this.trainingData = trainingData;
         this.label = label;
@@ -33,16 +33,18 @@ public class AucFitnessCal extends Common implements FitnessCal{
     @Override
     public double getFitness(Individual individual) {
         byte[] genes = individual.getGenes();
-        List<Double> featureWeights = new ArrayList<>();
-        //将基因（权重）截取下来，转成十进制的小数
+        List<Double> fraudWeights = new ArrayList<>();
+        List<Double> unFraudWeights = new ArrayList<>();
+        //将基因（权重）截取下来，转成十进制的小数。其中每个基因前半部分为fraud焦元的权重，后半部分为unFraud焦元的权重
         for (int i = 0;i<genes.length;i+=geneLength){
-            byte[] gene = Arrays.copyOfRange(genes, i, i+geneLength);
-            double weight = ArraysUtil.toDouble(gene);
-            featureWeights.add(weight);
+            byte[] fraud = Arrays.copyOfRange(genes, i, i+(geneLength/2));
+            byte[] unFraud = Arrays.copyOfRange(genes, i+(geneLength/2), i+geneLength);
+            fraudWeights.add(ArraysUtil.toDouble(fraud));
+            unFraudWeights.add(ArraysUtil.toDouble(unFraud));
         }
 
         //对训练数据集加权
-        weightedData(trainingData, featureWeights);
+        weightedData(trainingData, fraudWeights, unFraudWeights);
         //DS合成
         Map<String,Double[]> dSResult = dsFuse(trainingData);
         //求fraud焦元的AUC值

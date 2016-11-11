@@ -1,7 +1,7 @@
 package edu.gdut.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.Map;
  * Email:  yangyujian25@gmail.com
  * Date:  16-11-10 下午11:13
  */
-@Component
+@Service
 public class ILRE extends IRE{
     @Autowired
     private AUC auc;
