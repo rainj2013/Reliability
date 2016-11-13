@@ -27,4 +27,5 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:1.4.1.RELEASE")
     compile group: 'org.nutz', name: 'nutz', version: '1.r.58'
     compile group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+    compile group: 'net.sourceforge.jexcelapi', name: 'jxl', version: '2.6.12'
 }
