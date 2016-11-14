@@ -20,6 +20,7 @@ public class CRE extends Common{
     protected IRE ire;
     @Autowired
     protected AUC auc;
+    //下面数据的线程安全先不做了，暂时没必要
     protected int genes = 7;//基因（feature）个数
     protected int geneLength = 14;//单个基因转成二进制后的长度，保留4位有效数字的话，2^14够存，所以就14位吧
     protected int initPopSize = 40;//初始化种群的个体数
@@ -117,7 +118,7 @@ public class CRE extends Common{
      * @param testData  测试集
      * @return DS合成结果
      */
-    public Map<String, Double[]> cre(Map<String, List<Double[]>> trainingData, List<Integer> label,
+    public Map<String, Double[]> cal(Map<String, List<Double[]>> trainingData, List<Integer> label,
                                            Map<String, List<Double[]>> testData){
         List<Double> optimalWeights =  optimalWeights(trainingData,label);
         weightedData(testData, optimalWeights);

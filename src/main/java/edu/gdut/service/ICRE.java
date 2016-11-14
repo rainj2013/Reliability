@@ -2,6 +2,7 @@ package edu.gdut.service;
 
 import edu.gdut.service.GA.*;
 import edu.gdut.util.ArraysUtil;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
@@ -10,6 +11,7 @@ import java.util.*;
  * Email:  yangyujian25@gmail.com
  * Date:  16-11-11 下午3:10
  */
+@Service
 public class ICRE extends CRE{
 
     /**
@@ -82,7 +84,7 @@ public class ICRE extends CRE{
      * @param testData
      * @return
      */
-    public Map<String,Double[]> iCRE(Map<String, List<Double[]>> trainingData, List<Integer> label,
+    public Map<String,Double[]> cal(Map<String, List<Double[]>> trainingData, List<Integer> label,
                                      Map<String, List<Double[]>> testData){
         List<Double[]> optimalWeights = optimalWeights(label,trainingData);
         List<Double> fraudWeights = new ArrayList<>();

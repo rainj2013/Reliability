@@ -3,7 +3,6 @@ package edu.gdut.service;
 import edu.gdut.service.DS.EvidenceDS;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,7 @@ import java.util.Map;
  * Date:  16-11-8
  */
 @Service
-public class Common {
+public abstract class Common implements Cal{
     /**
      * @param Data           数据集
      * @param featureWeights 每个feature对应的权重

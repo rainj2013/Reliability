@@ -47,7 +47,7 @@ public class IRE extends Common{
         return listMax > threshold ? listMax : threshold;
     }
 
-    public Map<String,Double[]> ire(Map<String,List<Double[]>> trainingData, List<Integer> label, Map<String,List<Double[]>> testData){
+    public Map<String,Double[]> cal(Map<String,List<Double[]>> trainingData, List<Integer> label, Map<String,List<Double[]>> testData){
         List<Double> aucList = aUC.auc(trainingData, label, 0);
         List<Double> featureWeights = featureWeights(aucList);
         weightedData(testData, featureWeights);

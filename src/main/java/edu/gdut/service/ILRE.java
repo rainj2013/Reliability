@@ -22,7 +22,7 @@ public class ILRE extends IRE{
      * @param label 训练集标签
      * @param testData 测试数据集
      */
-    public Map<String,Double[]> iLRE(Map<String, List<Double[]>> trainingData, List<Integer> label, Map<String, List<Double[]>> testData){
+    public Map<String,Double[]> cal(Map<String, List<Double[]>> trainingData, List<Integer> label, Map<String, List<Double[]>> testData){
 
         //Step1： 分别计算 Training 数据集中每个 feature 的单焦元即 fraud、 unfraud 焦元对应的 AUC 值；
         List<Double> fraudAUC = auc.auc(trainingData, label, 0);//各个feature的fraud焦元的AUC值
