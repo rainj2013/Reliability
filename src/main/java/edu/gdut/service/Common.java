@@ -72,7 +72,8 @@ public class Common {
                 evidenceDs = evidenceDs.add(new EvidenceDS(feature[0], feature[1]));
             }
             //添加到结果集合
-            DSResult.put(Integer.toString(index), new Double[]{evidenceDs.getFraud(), evidenceDs.getUnfraud()});
+            DSResult.put(Integer.toString(index), new Double[]{evidenceDs.getFraud(), evidenceDs.getUnfraud(),
+                    evidenceDs.getUncertainty()});
             index++;
         }
         return DSResult;

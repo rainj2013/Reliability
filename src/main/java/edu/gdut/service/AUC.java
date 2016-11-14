@@ -44,17 +44,15 @@ public class AUC {
         int objectSize = label.size();
         int featureSize = map.get("1").size();
         List<Double> aucList = new ArrayList<>();
-
+        Double[] featureValues;
         for (int featureId = 1; featureId < featureSize + 1; featureId++) {
             //迭代feature，计算每个feature的AUC
             List<AUCBean> features = new ArrayList<>();
 
             for (int objectId = 1; objectId < objectSize + 1; objectId++) {
                 //取每个object中其中一个feature对应焦元的值
-                features.add(new AUCBean(
-                        map.get(objectId).get(featureId - 1)[0]
-                        , map.get(objectId).get(featureId - 1)[1], label.get(objectId - 1) == 1)
-                );
+                featureValues = map.get(Integer.toString(objectId)).get(featureId - 1);
+                features.add(new AUCBean( featureValues[0], featureValues[1], label.get(objectId - 1) == 1));
             }
             //按照焦元的值进行排序
             features.sort(new Comparator<AUCBean>() {
@@ -63,11 +61,15 @@ public class AUC {
                     if(element == 0){
                         if (o1.getFraud() > o2.getFraud())
                             return 1;
-                        return -1;
+                        else if (o1.getFraud() < o2.getFraud())
+                            return -1;
+                        else return 0;
                     }else{
                         if (o1.getUnFraud() > o2.getUnFraud())
                             return 1;
-                        return -1;
+                        else if (o1.getUnFraud() < o2.getUnFraud())
+                            return -1;
+                        else return 0;
                     }
                 }
             });
