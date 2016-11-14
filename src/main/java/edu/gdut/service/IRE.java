@@ -1,5 +1,6 @@
 package edu.gdut.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,8 +13,11 @@ import java.util.*;
  */
 @Service
 public class IRE extends Common{
-    private static double threshold = 0.81;
 
+    @Autowired
+    private AUC aUC;
+
+    private static double threshold = 0.81;
     public void setThreshold(double threshold) {
         IRE.threshold = threshold;
     }
@@ -41,5 +45,13 @@ public class IRE extends Common{
     private double max(List<Double> list) {
         double listMax = Collections.max(list);
         return listMax > threshold ? listMax : threshold;
+    }
+
+    public Map<String,Double[]> ire(Map<String,List<Double[]>> trainingData, List<Integer> label, Map<String,List<Double[]>> testData){
+        List<Double> aucList = aUC.auc(trainingData, label, 0);
+        List<Double> featureWeights = featureWeights(aucList);
+        weightedData(testData, featureWeights);
+        Map<String,Double[]> dsResult = dsFuse(testData);
+        return dsResult;
     }
 }
