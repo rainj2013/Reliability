@@ -14,7 +14,7 @@ import java.util.*;
  * Date:  16-11-8
  */
 @Service
-public class CRE extends Common{
+public class CRE extends Common implements Cal {
     @Qualifier("IRE")
     @Autowired
     protected IRE ire;
@@ -27,58 +27,58 @@ public class CRE extends Common{
     protected int maxGenerationCount = 5000;//遗传算法计算代数
 
     /**
-     * @Description 设置基因（feature）个数
      * @param genes 基因个数
+     * @Description 设置基因（feature）个数
      */
-    public void setGenes(int genes){
+    public void setGenes(int genes) {
         this.genes = genes;
     }
 
     /**
-     * @Description 设置单个基因转成二进制后的长度
      * @param geneLength 单个基因转成二进制后的长度
+     * @Description 设置单个基因转成二进制后的长度
      */
-    public void setGeneLength(int geneLength){
+    public void setGeneLength(int geneLength) {
         this.geneLength = geneLength;
     }
 
     /**
-     * @Description 设置初始化种群的个体数
      * @param initPopSize 初始化种群的个体数
+     * @Description 设置初始化种群的个体数
      */
-    public void setInitPopSize(int initPopSize){
+    public void setInitPopSize(int initPopSize) {
         this.initPopSize = initPopSize;
     }
 
     /**
-     * @Description 设置遗传算法计算代数
      * @param maxGenerationCount 遗传算法计算代数
+     * @Description 设置遗传算法计算代数
      */
-    public void setMaxGenerationCount(int maxGenerationCount){
+    public void setMaxGenerationCount(int maxGenerationCount) {
         this.maxGenerationCount = maxGenerationCount;
     }
 
     /**
-     * @Description 对Training数据集分别使用随机产生的权重、 IRE方法产生的权重作初始权重，运用遗传算法分别得到feature的最优权重
      * @param trainingData 训练集数据
-     * @param label 训练集标签
+     * @param label        训练集标签
      * @return 最佳权重
+     * @Description 对Training数据集分别使用随机产生的权重、 IRE方法产生的权重作初始权重，运用遗传算法分别得到feature的最优权重
      */
-    public List<Double> optimalWeights(Map<String, List<Double[]>> trainingData, List<Integer> label){
+    public List<Double> optimalWeights(Map<String, List<Double[]>> trainingData, List<Integer> label) {
         //计算训练集每个feature的fraud焦元的auc值
         final List<Double> aucList = auc.auc(trainingData, label, 0);
         //IRE方法计算每个feature的权重
         final List<Double> ireFeatureWeights = ire.featureWeights(aucList);
         //创建适应度计算类
-        FitnessCal fitnessCal =  new AucFitnessCal(geneLength, trainingData, label);
+        FitnessCal fitnessCal = new AucFitnessCal(geneLength, trainingData, label);
         //设置适应度计算类
         Individual.setFitnessCal(fitnessCal);
         //设置总基因长度
-        Individual.setDefaultGeneLength(genes*geneLength);
+        Individual.setDefaultGeneLength(genes * geneLength);
         //初始化种群
-        byte[] initGenes = ArraysUtil.toBytes(ireFeatureWeights, genes*geneLength);
+        byte[] initGenes = ArraysUtil.toBytes(ireFeatureWeights, genes * geneLength);
         List<byte[]> initPop = new ArrayList<>();
-        for(int i = 0; i<initPopSize; i++){
+        for (int i = 0; i < initPopSize; i++) {
             initPop.add(initGenes);
         }
         Population myPop = new Population(initPop);
@@ -103,8 +103,8 @@ public class CRE extends Common{
         Individual individual = pop.getFittest();
         byte[] genes = individual.getGenes();
         List<Double> optimalWeights = new ArrayList<>();
-        for (int i = 0;i<genes.length;i+=geneLength){
-            byte[] gene = Arrays.copyOfRange(genes, i, i+geneLength);
+        for (int i = 0; i < genes.length; i += geneLength) {
+            byte[] gene = Arrays.copyOfRange(genes, i, i + geneLength);
             double weight = ArraysUtil.toDouble(gene);
             optimalWeights.add(weight);
         }
@@ -112,15 +112,15 @@ public class CRE extends Common{
     }
 
     /**
-     * @Description 利用 feature 的最优权重对 test 数据集加权， 并计算 DS 合成结果
      * @param trainingData 训练集数据
-     * @param label 训练集标签
-     * @param testData  测试集
+     * @param label        训练集标签
+     * @param testData     测试集
      * @return DS合成结果
+     * @Description 利用 feature 的最优权重对 test 数据集加权， 并计算 DS 合成结果
      */
     public Map<String, Double[]> cal(Map<String, List<Double[]>> trainingData, List<Integer> label,
-                                           Map<String, List<Double[]>> testData){
-        List<Double> optimalWeights =  optimalWeights(trainingData,label);
+                                     Map<String, List<Double[]>> testData) {
+        List<Double> optimalWeights = optimalWeights(trainingData, label);
         weightedData(testData, optimalWeights);
         Map<String, Double[]> result = dsFuse(testData);
         return result;

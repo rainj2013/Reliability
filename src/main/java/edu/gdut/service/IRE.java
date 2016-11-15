@@ -12,7 +12,7 @@ import java.util.*;
  * @date 2016年10月31日 上午11:09:51
  */
 @Service
-public class IRE extends Common{
+public class IRE extends Common implements Cal {
 
     @Autowired
     private AUC aUC;

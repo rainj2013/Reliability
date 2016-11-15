@@ -13,7 +13,7 @@ import java.util.Map;
  * Date:  16-11-8
  */
 @Service
-public abstract class Common implements Cal{
+public abstract class Common {
     /**
      * @param Data           数据集
      * @param featureWeights 每个feature对应的权重

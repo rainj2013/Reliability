@@ -12,7 +12,7 @@ import java.util.Map;
  * Date:  16-11-10 下午11:13
  */
 @Service
-public class ILRE extends IRE{
+public class ILRE extends IRE {
     @Autowired
     private AUC auc;
 

@@ -12,7 +12,7 @@ import java.util.*;
  * Date:  16-11-11 下午3:10
  */
 @Service
-public class ICRE extends CRE{
+public class ICRE extends CRE {
 
     /**
      * @Description 对 Training 数据集运用遗传算法对每一个 feature 的 fraud、 unfraud 焦元寻优， 得到每一个
