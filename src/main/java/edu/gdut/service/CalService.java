@@ -1,9 +1,16 @@
 package edu.gdut.service;
 
+import edu.gdut.dao.CalTaskMapper;
+import edu.gdut.domain.CalTask;
+import edu.gdut.util.StringUtil;
+import edu.gdut.util.XlsUtil;
+import jxl.read.biff.BiffException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -16,6 +23,9 @@ import java.util.concurrent.Executors;
  */
 @Service
 public class CalService {
+    @Autowired(required = false)
+    private CalTaskMapper calTaskMapper;
+
     @Autowired
     @Qualifier("IRE")
     private IRE iRE;
@@ -34,50 +44,73 @@ public class CalService {
         executorService = Executors.newCachedThreadPool();
     }
 
-    public void handle(Map<String, List<Double[]>> trainingData, List<Integer> label, Map<String, List<Double[]>> testData
-            , String algoName, String remark) {
-        CalTask calTask = null;
+    public void handle(String fileName, String algoName, String remark) throws IOException, BiffException {
+
+        Map<String, List<Double[]>> trainingData, testData;
+        List<Integer> label;
+        String dataFile = "xls/" + fileName;
+        try (InputStream ins = new FileInputStream(dataFile)) {
+            trainingData = XlsUtil.readData(ins, 0, 7);
+            testData = XlsUtil.readData(ins, 2, 7);
+            label = XlsUtil.readLabel(ins, 1);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        Task task = null;
+        CalTask calTask = new CalTask(StringUtil.randomString(),dataFile, remark, algoName, new Date());;
         switch (algoName) {
             case "IRE":
-                calTask = new CalTask(iRE, trainingData, label, testData);
+                task = new Task(iRE, trainingData, label, testData, calTask);
                 break;
             case "CRE":
-                calTask = new CalTask(cRE, trainingData, label, testData);
+                task = new Task(cRE, trainingData, label, testData, calTask);
                 break;
             case "ICRE":
-                calTask = new CalTask(iCRE, trainingData, label, testData);
+                task = new Task(iCRE, trainingData, label, testData, calTask);
                 break;
             case "ILRE":
-                calTask = new CalTask(iLRE, trainingData, label, testData);
+                task = new Task(iLRE, trainingData, label, testData, calTask);
                 break;
             default:
                 break;
         }
-        if (null != calTask) {
-            //TODO 将计算任务插入数据库
-            executorService.submit(calTask);
+        if (null != task) {
+            calTaskMapper.insert(calTask);
+            executorService.submit(task);
         }
 
     }
 
-    class CalTask implements Runnable {
+    class Task implements Runnable {
         private Cal c;
-        Map<String, List<Double[]>> trainingData;
-        List<Integer> label;
-        Map<String, List<Double[]>> testData;
+        private Map<String, List<Double[]>> trainingData;
+        private List<Integer> label;
+        private Map<String, List<Double[]>> testData;
+        private CalTask calTask;
 
-        public CalTask(Cal c, Map<String, List<Double[]>> trainingData, List<Integer> label,
-                       Map<String, List<Double[]>> testData) {
+        public Task(Cal c, Map<String, List<Double[]>> trainingData, List<Integer> label,
+                       Map<String, List<Double[]>> testData, CalTask calTask) {
             this.c = c;
             this.label = label;
             this.trainingData = trainingData;
             this.testData = testData;
+            this.calTask = calTask;
         }
 
         @Override
         public void run() {
-            c.cal(trainingData, label, testData);
-            //TODO 将结果写入文件，更新数据库计算状态
+            Map<String, Double[]> result = c.cal(trainingData, label, testData);
+            String fileName = "xls/"+calTask.getId()+".xls";
+            try (OutputStream out = new FileOutputStream(fileName)) {
+                XlsUtil.writeXls(out, result);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            calTask.setResultFile(fileName);
+            calTask.setFinTime(new Date());
+            calTaskMapper.update(calTask);
         }
     }
+
 }

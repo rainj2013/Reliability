@@ -28,4 +28,8 @@ dependencies {
     compile group: 'org.nutz', name: 'nutz', version: '1.r.58'
     compile group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
     compile group: 'net.sourceforge.jexcelapi', name: 'jxl', version: '2.6.12'
+    compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '1.1.1'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.38'
+    compile group: 'com.alibaba', name: 'druid', version: '1.0.26'
+    compile group: 'log4j', name: 'log4j', version: '1.2.17'
 }

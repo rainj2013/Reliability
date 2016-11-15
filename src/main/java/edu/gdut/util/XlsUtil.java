@@ -3,6 +3,7 @@ package edu.gdut.util;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.*;
 
 import jxl.Cell;
@@ -104,6 +105,10 @@ public class XlsUtil {
     public static List<Integer> readLabel(String realPath, int sheetIndex) throws IOException, BiffException {
         InputStream ins = new FileInputStream(realPath);
         return readLabel(ins, sheetIndex);
+    }
+
+    public static void writeXls(OutputStream out, Map<String, Double[]> data){
+        //TODO
     }
 
 }
