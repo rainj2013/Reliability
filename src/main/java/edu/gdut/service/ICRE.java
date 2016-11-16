@@ -34,7 +34,7 @@ public class ICRE extends CRE {
         //IRE方法计算unFraud焦元每个feature的权重
         final List<Double> ireUnFraudWeights = ire.featureWeights(unFraudAucList);
         //创建适应度计算类
-        FitnessCal fitnessCal =  new AucFitnessCal2(geneLength, trainingData, label);
+        FitnessCal fitnessCal =  new AucFitnessCal2(geneLength, trainingData, label, aUC);
         //设置适应度计算类
         Individual.setFitnessCal(fitnessCal);
         //设置总基因长度
