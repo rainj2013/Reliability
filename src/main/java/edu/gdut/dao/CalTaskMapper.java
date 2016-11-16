@@ -3,6 +3,8 @@ package edu.gdut.dao;
 import edu.gdut.domain.CalTask;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 /**
  * Author:  rainj2013
  * Email:  yangyujian25@gmail.com
@@ -12,6 +14,10 @@ import org.apache.ibatis.annotations.*;
 public interface CalTaskMapper {
     @Select("SELECT * FROM calTask WHERE id = #{id}")
     CalTask findById(@Param("id") String id);
+
+    @Select("SELECT id, resultFile, dataFile, remark, algoName, subTime, finTime FROM calTask ORDER BY subTime " +
+            "DESC LIMIT 0, #{value}")
+    List<CalTask> findTop(@Param("value")int value);
 
     @Insert("insert into callTask(id, dataFile, algoName, subTime, remark) values (#{id}, #{dataFile}, #{algoName}," +
             "#{subTime}, #{remark})")

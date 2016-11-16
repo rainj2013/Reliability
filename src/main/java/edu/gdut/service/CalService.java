@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -58,7 +58,7 @@ public class CalService {
         }
 
         Task task = null;
-        CalTask calTask = new CalTask(StringUtil.randomString(),dataFile, remark, algoName, new Date());;
+        CalTask calTask = new CalTask(StringUtil.randomString(),dataFile, remark, algoName, new Timestamp(System.currentTimeMillis()));
         switch (algoName) {
             case "IRE":
                 task = new Task(iRE, trainingData, label, testData, calTask);
@@ -106,9 +106,12 @@ public class CalService {
                 XlsUtil.writeXls(out, result);
             } catch (Exception e) {
                 e.printStackTrace();
+                calTask.setResultFile("error");
+                calTask.setFinTime(new Timestamp(System.currentTimeMillis()));
+                calTaskMapper.update(calTask);
             }
             calTask.setResultFile(fileName);
-            calTask.setFinTime(new Date());
+            calTask.setFinTime(new Timestamp(System.currentTimeMillis()));
             calTaskMapper.update(calTask);
         }
     }

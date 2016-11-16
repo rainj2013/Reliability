@@ -11,6 +11,8 @@ import jxl.CellType;
 import jxl.NumberCell;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+import jxl.write.*;
+import jxl.write.Number;
 
 /**
  * Author:  rainj2013
@@ -107,8 +109,26 @@ public class XlsUtil {
         return readLabel(ins, sheetIndex);
     }
 
-    public static void writeXls(OutputStream out, Map<String, Double[]> data){
-        //TODO
+    public static void writeXls(OutputStream out, Map<String, Double[]> data) throws IOException, WriteException {
+        WritableWorkbook wwb = Workbook.createWorkbook(out);
+        WritableSheet sheet = wwb.createSheet("DS合成结果", 0);
+        int objectSize = data.size();
+        Double[] values;
+        //表头信息
+        sheet.addCell(new Label(0,0,"objectId"));
+        sheet.addCell(new Label(1,0,"fraud"));
+        sheet.addCell(new Label(2,0,"UnFraud"));
+        sheet.addCell(new Label(3,0,"UnCertainty"));
+        //填充数据
+        for (int objectId = 1; objectId<=objectSize; objectId++){
+            values = data.get(Integer.toString(objectId));
+            for (int index = 0; index<values.length; index++){
+                sheet.addCell(new Number(index, objectId, values[index]));
+            }
+        }
+        wwb.write();
+        out.flush();
+        wwb.close();
     }
 
 }

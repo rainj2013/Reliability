@@ -1,5 +1,6 @@
 package edu.gdut.domain;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -13,8 +14,8 @@ public class CalTask {
     private String dataFile;
     private String remark;
     private String algoName;
-    private Date subTime;
-    private Date finTime;
+    private Timestamp subTime;
+    private Timestamp finTime;
 
 
     public String getId() {
@@ -61,7 +62,7 @@ public class CalTask {
         return subTime;
     }
 
-    public void setSubTime(Date subTime) {
+    public void setSubTime(Timestamp subTime) {
         this.subTime = subTime;
     }
 
@@ -69,11 +70,21 @@ public class CalTask {
         return finTime;
     }
 
-    public void setFinTime(Date finTime) {
+    public void setFinTime(Timestamp finTime) {
         this.finTime = finTime;
     }
 
-    public CalTask(String id, String dataFile, String remark, String algoName, Date subTime) {
+    public CalTask(String id, String resultFile, String dataFile, String remark, String algoName, Timestamp subTime, Timestamp finTime) {
+        this.id = id;
+        this.resultFile = resultFile;
+        this.dataFile = dataFile;
+        this.remark = remark;
+        this.algoName = algoName;
+        this.subTime = subTime;
+        this.finTime = finTime;
+    }
+
+    public CalTask(String id, String dataFile, String remark, String algoName, Timestamp subTime) {
         this.id = id;
         this.dataFile = dataFile;
         this.remark = remark;

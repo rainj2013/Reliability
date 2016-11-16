@@ -4,8 +4,11 @@ import edu.gdut.util.XlsUtil;
 import jxl.read.biff.BiffException;
 import org.junit.Test;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,5 +47,20 @@ public class XlsTest {
         } catch (BiffException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void writeTest(){
+        try {
+            OutputStream out = new FileOutputStream("/home/rainj2013/桌面/write.xls");
+            Map<String, Double[]> data = new HashMap<>();
+            data.put("1",new Double[]{1.0,0.0,0.0,1.0});
+            data.put("2",new Double[]{1.0111111111111,0.0,0.0,1.0});
+            data.put("3",new Double[]{1.0,0.0,0.011111111,0.1});
+            XlsUtil.writeXls(out, data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

@@ -38,7 +38,7 @@ public class UploadController {
         }
         data.put("code", "1");
         data.put("msg","上传成功！");
-        data.put("fileId",fileName);
+        data.put("fileName",fileName);
         return data;
     }
 }
