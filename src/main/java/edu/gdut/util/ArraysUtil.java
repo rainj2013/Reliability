@@ -34,10 +34,17 @@ public class ArraysUtil {
         byte[] bytes = new byte[bytesSize];
         int index = 0;
         for(double d : doubles){
-            str =  Double.toString(d).split(".")[1];
-            temp = Integer.toBinaryString(Integer.parseInt(str));
+            str =  Double.toString(d).split("\\.")[1].substring(0,4);
+            temp = Long.toBinaryString(Long.parseLong(str));
+            while (temp.length()<bytesSize/doubles.size()){
+                temp = "0"+temp;
+            }
             for(char c:temp.toCharArray()){
-                bytes[index++] = (byte)c;
+                if (c=='0')
+                    bytes[index] = 0;
+                else
+                    bytes[index] = 1;
+                index++;
             }
         }
         return bytes;
@@ -67,14 +74,14 @@ public class ArraysUtil {
             d0 = doubles0.get(i);
             d1 = doubles1.get(i);
 
-            str =  Double.toString(d0).split(".")[1];
-            str = Integer.toBinaryString(Integer.parseInt(str));
+            str =  Double.toString(d0).split("\\.")[1];
+            str = Long.toBinaryString(Long.parseLong(str));
             for(char c:str.toCharArray()){
                 bytes[index++] = (byte)c;
             }
 
-            str =  Double.toString(d1).split(".")[1];
-            str = Integer.toBinaryString(Integer.parseInt(str));
+            str =  Double.toString(d1).split("\\.")[1];
+            str = Long.toBinaryString(Long.parseLong(str));
             for(char c:str.toCharArray()){
                 bytes[index++] = (byte)c;
             }

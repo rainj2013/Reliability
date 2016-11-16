@@ -3,7 +3,6 @@ package edu.gdut.service.GA;
 import edu.gdut.service.AUC;
 import edu.gdut.service.Common;
 import edu.gdut.util.ArraysUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,17 +16,16 @@ import java.util.Map;
  * 以auc值衡量适应度
  */
 public class AucFitnessCal extends Common implements FitnessCal{
-    @Autowired
-    private AUC auc;
-
+    private final AUC aUC;
     private final int geneLength;//基因长度
     private final Map<String, List<Double[]>> trainingData;//训练集数据
     private final List<Integer> label;//训练集标签
 
-    public AucFitnessCal(int geneLength, Map<String, List<Double[]>> trainingData, List<Integer> label) {
+    public AucFitnessCal(int geneLength, Map<String, List<Double[]>> trainingData, List<Integer> label, AUC aUC) {
         this.geneLength = geneLength;
         this.trainingData = trainingData;
         this.label = label;
+        this.aUC = aUC;
     }
 
     @Override
@@ -46,7 +44,7 @@ public class AucFitnessCal extends Common implements FitnessCal{
         //DS合成
         Map<String,Double[]> dSResult = dsFuse(trainingData);
         //求fraud焦元的AUC值
-        double fitness = auc.auc(label, dSResult, 0);
+        double fitness = aUC.auc(label, dSResult, 0);
 
         return fitness;
     }

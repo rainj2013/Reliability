@@ -19,12 +19,12 @@ public class CRE extends Common implements Cal {
     @Autowired
     protected IRE ire;
     @Autowired
-    protected AUC auc;
+    protected AUC aUC;
     //下面数据的线程安全先不做了，暂时没必要
     protected int genes = 7;//基因（feature）个数
     protected int geneLength = 14;//单个基因转成二进制后的长度，保留4位有效数字的话，2^14够存，所以就14位吧
     protected int initPopSize = 40;//初始化种群的个体数
-    protected int maxGenerationCount = 5000;//遗传算法计算代数
+    protected int maxGenerationCount = 500;//遗传算法计算代数
 
     /**
      * @param genes 基因个数
@@ -66,11 +66,11 @@ public class CRE extends Common implements Cal {
      */
     public List<Double> optimalWeights(Map<String, List<Double[]>> trainingData, List<Integer> label) {
         //计算训练集每个feature的fraud焦元的auc值
-        final List<Double> aucList = auc.auc(trainingData, label, 0);
+        final List<Double> aucList = aUC.auc(trainingData, label, 0);
         //IRE方法计算每个feature的权重
         final List<Double> ireFeatureWeights = ire.featureWeights(aucList);
         //创建适应度计算类
-        FitnessCal fitnessCal = new AucFitnessCal(geneLength, trainingData, label);
+        FitnessCal fitnessCal = new AucFitnessCal(geneLength, trainingData, label, aUC);
         //设置适应度计算类
         Individual.setFitnessCal(fitnessCal);
         //设置总基因长度
@@ -96,7 +96,10 @@ public class CRE extends Common implements Cal {
             public int compare(Population o1, Population o2) {
                 if (o1.getFittest().getFitness() > o2.getFittest().getFitness())
                     return -1;
-                return 1;
+                else if(o1.getFittest().getFitness() < o2.getFittest().getFitness())
+                    return 1;
+                else
+                    return 0;
             }
         });
         Population pop = pList.get(0);

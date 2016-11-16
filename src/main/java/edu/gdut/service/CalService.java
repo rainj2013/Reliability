@@ -45,18 +45,18 @@ public class CalService {
     }
 
     public void handle(String fileName, String algoName, String remark) throws IOException, BiffException {
-
         Map<String, List<Double[]>> trainingData, testData;
         List<Integer> label;
-        String dataFile = "xls/" + fileName;
-        try (InputStream ins = new FileInputStream(dataFile)) {
-            trainingData = XlsUtil.readData(ins, 0, 7);
-            testData = XlsUtil.readData(ins, 2, 7);
-            label = XlsUtil.readLabel(ins, 1);
+        String dataFile = "xls"+ File.separator + fileName;
+
+        try {
+            trainingData = XlsUtil.readData(dataFile, 0, 7);
+            testData = XlsUtil.readData(dataFile, 2, 7);
+            label = XlsUtil.readLabel(dataFile, 1);
         } catch (Exception e) {
+            e.printStackTrace();
             throw e;
         }
-
         Task task = null;
         CalTask calTask = new CalTask(StringUtil.randomString(),dataFile, remark, algoName, new Timestamp(System.currentTimeMillis()));
         switch (algoName) {

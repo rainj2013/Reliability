@@ -19,11 +19,11 @@ public interface CalTaskMapper {
             "DESC LIMIT 0, #{value}")
     List<CalTask> findTop(@Param("value")int value);
 
-    @Insert("insert into callTask(id, dataFile, algoName, subTime, remark) values (#{id}, #{dataFile}, #{algoName}," +
+    @Insert("insert into calTask(id, dataFile, algoName, subTime, remark) values (#{id}, #{dataFile}, #{algoName}," +
             "#{subTime}, #{remark})")
     void insert(CalTask calTask);
 
-    @Update("update callTask set resultFile=#{resultFile}, finTime=#{finTime} where id=#{id}")
+    @Update("update calTask set resultFile=#{resultFile}, finTime=#{finTime} where id=#{id}")
     boolean update(CalTask calTask);
 }
 

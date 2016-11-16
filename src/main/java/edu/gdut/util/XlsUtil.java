@@ -28,9 +28,8 @@ public class XlsUtil {
         Cell cell = null;
         NumberCell nCell;
         // 创建输入流
-        InputStream stream = ins;
         // 获取Excel文件对象
-        rwb = Workbook.getWorkbook(stream);
+        rwb = Workbook.getWorkbook(ins);
         // 获取文件的指定工作表(sheet)，默认第一个
         jxl.Sheet sheet = rwb.getSheet(sheetIndex);
         // 行数(表头(下标0)不需要，从1开始)
@@ -53,6 +52,7 @@ public class XlsUtil {
             // 把刚获取的列存入list
             list.add(row);
         }
+        ins.close();
         return list;
     }
 

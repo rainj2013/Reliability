@@ -4,6 +4,7 @@ package edu.gdut.controller;
  * Created by rainj2013 on 16-11-4.
  */
 
+import com.alibaba.fastjson.JSONObject;
 import edu.gdut.service.CalService;
 import jxl.read.biff.BiffException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,11 @@ public class CalculationController {
     @Autowired
     private CalService calService;
 
-    @RequestMapping
-    public Map<String, String> cal(String fileName, String algoName, String remark) {
+    @RequestMapping("/cal")
+    public Map<String, String> cal(@RequestBody JSONObject jsonObj) {
+        String fileName = jsonObj.get("fileName").toString();
+        String algoName = jsonObj.get("algoName").toString();
+        String remark = jsonObj.get("remark").toString();
         Map<String, String> data = new HashMap<>();
         try {
             calService.handle(fileName, algoName, remark);

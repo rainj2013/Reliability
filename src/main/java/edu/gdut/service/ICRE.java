@@ -26,9 +26,9 @@ public class ICRE extends CRE {
         setGeneLength(geneLength*2);
 
         //计算训练集每个feature的fraud焦元的auc值
-        final List<Double> fraudAucList = auc.auc(trainingData, label, 0);
+        final List<Double> fraudAucList = aUC.auc(trainingData, label, 0);
         //计算训练集每个feature的unFraud焦元的auc值
-        final List<Double> unFraudAucList = auc.auc(trainingData, label, 1);
+        final List<Double> unFraudAucList = aUC.auc(trainingData, label, 1);
         //IRE方法计算fraud焦元每个feature的权重
         final List<Double> ireFraudWeights = ire.featureWeights(fraudAucList);
         //IRE方法计算unFraud焦元每个feature的权重
