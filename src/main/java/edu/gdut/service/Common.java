@@ -52,16 +52,15 @@ public abstract class Common {
     }
 
     /**
-     * @param Data 待合成的数据集
+     * @param data 待合成的数据集
      * @return DS合成结果
      * @Description DS合成加权后的数据集
      */
-    public Map<String, Double[]> dsFuse(Map<String, List<Double[]>> Data) {
+    public Map<String, Double[]> dsFuse(Map<String, List<Double[]>> data) {
         Map<String, Double[]> DSResult = new HashMap<>();
-        int index = 1;
         //取出每个对象
-        for (Map.Entry<String, List<Double[]>> e : Data.entrySet()) {
-            List<Double[]> object = e.getValue();
+        for (int index = 1; index<=data.size(); index++) {
+            List<Double[]> object = data.get(Integer.toString(index));
             //因为DS算法类的写法原因，这里就很丑陋地先取feature集合第一个feature创建EvidenceDS对象，后面再用循环add
             Double[] feature = object.get(0);
             EvidenceDS evidenceDs = new EvidenceDS(feature[0], feature[1]);
@@ -73,7 +72,6 @@ public abstract class Common {
             //添加到结果集合
             DSResult.put(Integer.toString(index), new Double[]{evidenceDs.getFraud(), evidenceDs.getUnfraud(),
                     evidenceDs.getUncertainty()});
-            index++;
         }
         return DSResult;
     }

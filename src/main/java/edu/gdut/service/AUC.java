@@ -80,7 +80,7 @@ public class AUC {
 
             for (int i = features.size() - 1; i >= 0; i--) {
                 AUCBean aucBean = features.get(i);
-                if (element==0&&aucBean.isLabel()) {//对于unFraud焦元来说，正样本是标记为unFraud的
+                if ((element==0)==aucBean.isLabel()) {//对于unFraud焦元来说，正样本是标记为unFraud的
                     zheng += (i + 1);
                     count++;
                 }
