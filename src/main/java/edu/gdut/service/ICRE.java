@@ -14,6 +14,11 @@ import java.util.*;
 @Service
 public class ICRE extends CRE {
 
+    private int genes = 7;//基因（feature）个数
+    private int geneLength = 28;//单个焦元基因转成二进制后的长度，保留4位有效数字的话，2^14够存，每个基因2个焦元，2*14
+    private int initPopSize = 40;//初始化种群的个体数
+    private int maxGenerationCount = 500;//遗传算法计算代数
+
     /**
      * @Description 对 Training 数据集运用遗传算法对每一个 feature 的 fraud、 unfraud 焦元寻优， 得到每一个
         feature 在 fraud、 unFraud 焦元的最优权重。
@@ -22,9 +27,6 @@ public class ICRE extends CRE {
      * @return 最优权重
      */
     public List<Double[]> optimalWeights(List<Integer> label, Map<String, List<Double[]>> trainingData){
-        //因为有fraud/unFraud两个焦元，设置单个基因长度为单个焦元的2倍
-        setGeneLength(geneLength*2);
-
         //计算训练集每个feature的fraud焦元的auc值
         final List<Double> fraudAucList = aUC.auc(trainingData, label, 0);
         //计算训练集每个feature的unFraud焦元的auc值
@@ -52,6 +54,7 @@ public class ICRE extends CRE {
         while (generationCount < maxGenerationCount) {
             myPop = GA.evolvePopulation(myPop);
             pList.add(myPop);
+            log.info("遗传算法正在运算第"+generationCount+"代");
             generationCount++;
         }
         //倒序排

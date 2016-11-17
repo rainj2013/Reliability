@@ -2,6 +2,7 @@ package edu.gdut.service;
 
 import edu.gdut.service.GA.*;
 import edu.gdut.util.ArraysUtil;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -15,16 +16,18 @@ import java.util.*;
  */
 @Service
 public class CRE extends Common implements Cal {
+    protected Logger log = Logger.getLogger(this.getClass());
+
     @Qualifier("IRE")
     @Autowired
     protected IRE ire;
     @Autowired
     protected AUC aUC;
     //下面数据的线程安全先不做了，暂时没必要
-    protected int genes = 7;//基因（feature）个数
-    protected int geneLength = 14;//单个基因转成二进制后的长度，保留4位有效数字的话，2^14够存，所以就14位吧
-    protected int initPopSize = 40;//初始化种群的个体数
-    protected int maxGenerationCount = 500;//遗传算法计算代数
+    private int genes = 7;//基因（feature）个数
+    private int geneLength = 14;//单个基因转成二进制后的长度，保留4位有效数字的话，2^14够存，所以就14位吧
+    private int initPopSize = 40;//初始化种群的个体数
+    private int maxGenerationCount = 500;//遗传算法计算代数
 
     /**
      * @param genes 基因个数
@@ -89,6 +92,7 @@ public class CRE extends Common implements Cal {
             myPop = GA.evolvePopulation(myPop);
             pList.add(myPop);
             generationCount++;
+            log.info("遗传算法正在运算第"+generationCount+"代");
         }
         //倒序排
         Collections.sort(pList, new Comparator<Population>() {
