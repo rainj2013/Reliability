@@ -16,6 +16,7 @@ public class CalTask {
     private String algoName;
     private Timestamp subTime;
     private Timestamp finTime;
+    private String status;
 
 
     public String getId() {
@@ -74,7 +75,16 @@ public class CalTask {
         this.finTime = finTime;
     }
 
-    public CalTask(String id, String resultFile, String dataFile, String remark, String algoName, Timestamp subTime, Timestamp finTime) {
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public CalTask(String id, String resultFile, String dataFile, String remark, String algoName, Timestamp subTime,
+                   Timestamp finTime, String status) {
         this.id = id;
         this.resultFile = resultFile;
         this.dataFile = dataFile;
@@ -82,14 +92,16 @@ public class CalTask {
         this.algoName = algoName;
         this.subTime = subTime;
         this.finTime = finTime;
+        this.status = status;
     }
 
-    public CalTask(String id, String dataFile, String remark, String algoName, Timestamp subTime) {
+    public CalTask(String id, String dataFile, String remark, String algoName, Timestamp subTime, String status) {
         this.id = id;
         this.dataFile = dataFile;
         this.remark = remark;
         this.algoName = algoName;
         this.subTime = subTime;
+        this.status = status;
     }
 
     @Override
@@ -102,6 +114,7 @@ public class CalTask {
                 ", algoName='" + algoName + '\'' +
                 ", subTime=" + subTime +
                 ", finTime=" + finTime +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

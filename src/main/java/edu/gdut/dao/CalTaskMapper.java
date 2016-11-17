@@ -15,15 +15,15 @@ public interface CalTaskMapper {
     @Select("SELECT * FROM calTask WHERE id = #{id}")
     CalTask findById(@Param("id") String id);
 
-    @Select("SELECT id, resultFile, dataFile, remark, algoName, subTime, finTime FROM calTask ORDER BY subTime " +
+    @Select("SELECT id, resultFile, dataFile, remark, algoName, subTime, finTime, status FROM calTask ORDER BY subTime " +
             "DESC LIMIT 0, #{value}")
     List<CalTask> findTop(@Param("value")int value);
 
-    @Insert("insert into calTask(id, dataFile, algoName, subTime, remark) values (#{id}, #{dataFile}, #{algoName}," +
-            "#{subTime}, #{remark})")
+    @Insert("insert into calTask(id, dataFile, algoName, subTime, remark, status) values (#{id}, #{dataFile}, #{algoName}," +
+            "#{subTime}, #{remark}, #{status})")
     void insert(CalTask calTask);
 
-    @Update("update calTask set resultFile=#{resultFile}, finTime=#{finTime} where id=#{id}")
+    @Update("update calTask set resultFile=#{resultFile}, finTime=#{finTime}, status=#{status} where id=#{id}")
     boolean update(CalTask calTask);
 }
 

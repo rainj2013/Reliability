@@ -58,7 +58,8 @@ public class CalService {
             throw e;
         }
         Task task = null;
-        CalTask calTask = new CalTask(StringUtil.randomString(),dataFile, remark, algoName, new Timestamp(System.currentTimeMillis()));
+        CalTask calTask = new CalTask(StringUtil.randomString(),dataFile, remark, algoName,
+                new Timestamp(System.currentTimeMillis()), "计算中");
         switch (algoName) {
             case "IRE":
                 task = new Task(iRE, trainingData, label, testData, calTask);
@@ -106,10 +107,11 @@ public class CalService {
                 XlsUtil.writeXls(out, result);
             } catch (Exception e) {
                 e.printStackTrace();
-                calTask.setResultFile("error");
+                calTask.setStatus("计算出错");
                 calTask.setFinTime(new Timestamp(System.currentTimeMillis()));
                 calTaskMapper.update(calTask);
             }
+            calTask.setStatus("计算完成");
             calTask.setResultFile(fileName);
             calTask.setFinTime(new Timestamp(System.currentTimeMillis()));
             calTaskMapper.update(calTask);
