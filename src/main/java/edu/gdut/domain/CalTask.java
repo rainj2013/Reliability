@@ -16,7 +16,7 @@ public class CalTask {
     private String algoName;
     private Timestamp subTime;
     private Timestamp finTime;
-    private String status;
+    private Integer status;
 
 
     public String getId() {
@@ -75,16 +75,16 @@ public class CalTask {
         this.finTime = finTime;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
     public CalTask(String id, String resultFile, String dataFile, String remark, String algoName, Timestamp subTime,
-                   Timestamp finTime, String status) {
+                   Timestamp finTime, Integer status) {
         this.id = id;
         this.resultFile = resultFile;
         this.dataFile = dataFile;
@@ -95,7 +95,7 @@ public class CalTask {
         this.status = status;
     }
 
-    public CalTask(String id, String dataFile, String remark, String algoName, Timestamp subTime, String status) {
+    public CalTask(String id, String dataFile, String remark, String algoName, Timestamp subTime, Integer status) {
         this.id = id;
         this.dataFile = dataFile;
         this.remark = remark;
