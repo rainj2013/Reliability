@@ -102,16 +102,16 @@ public class CalService {
         @Override
         public void run() {
             Map<String, Double[]> result = c.cal(trainingData, label, testData);
-            String fileName = "xls/"+calTask.getId()+".xls";
-            try (OutputStream out = new FileOutputStream(fileName)) {
+            String fileName = calTask.getId()+".xls";
+            try (OutputStream out = new FileOutputStream("xls"+File.separator+fileName)) {
                 XlsUtil.writeXls(out, result);
             } catch (Exception e) {
                 e.printStackTrace();
-                calTask.setStatus(1);
+                calTask.setStatus(2);
                 calTask.setFinTime(new Timestamp(System.currentTimeMillis()));
                 calTaskMapper.update(calTask);
             }
-            calTask.setStatus(2);
+            calTask.setStatus(1);
             calTask.setResultFile(fileName);
             calTask.setFinTime(new Timestamp(System.currentTimeMillis()));
             calTaskMapper.update(calTask);

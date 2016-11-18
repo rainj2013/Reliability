@@ -22,9 +22,9 @@ public class CalculationController {
 
     @RequestMapping("/cal")
     public Map<String, String> cal(@RequestBody JSONObject jsonObj) {
-        String fileName = jsonObj.get("fileName").toString();
-        String algoName = jsonObj.get("algoName").toString();
-        String remark = jsonObj.get("remark").toString();
+        String fileName = jsonObj.getString("fileName");
+        String algoName = jsonObj.getString("algoName");
+        String remark = jsonObj.getString("remark");
         Map<String, String> data = new HashMap<>();
         try {
             calService.handle(fileName, algoName, remark);
