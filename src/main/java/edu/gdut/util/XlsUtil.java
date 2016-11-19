@@ -122,8 +122,9 @@ public class XlsUtil {
         //填充数据
         for (int objectId = 1; objectId<=objectSize; objectId++){
             values = data.get(Integer.toString(objectId));
+            sheet.addCell(new Number(0, objectId, objectId));
             for (int index = 0; index<values.length; index++){
-                sheet.addCell(new Number(index, objectId, values[index]));
+                sheet.addCell(new Number(index+1, objectId, values[index]));
             }
         }
         wwb.write();
