@@ -38,6 +38,10 @@ public class CalService {
     @Autowired
     @Qualifier("ICRE")
     private ICRE iCRE;
+    @Autowired
+    @Qualifier("IRE4ThreeEle")
+    private IRE4ThreeEle ire4ThreeEle;
+
     private static ExecutorService executorService;
 
     static {
@@ -72,6 +76,9 @@ public class CalService {
                 break;
             case "ILRE":
                 task = new Task(iLRE, trainingData, label, testData, calTask);
+                break;
+            case "IRE3":
+                task = new Task(ire4ThreeEle, trainingData, label, testData, calTask);
                 break;
             default:
                 break;
