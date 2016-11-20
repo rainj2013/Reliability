@@ -3,6 +3,7 @@ package edu.gdut.service;
 import edu.gdut.service.DS.EvidenceDS;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ public abstract class Common {
 
         for (int objectId = 1;objectId<=data.size();objectId++) {
             String id = Integer.toString(objectId);
+            List<Double[]> features = new ArrayList<>();
             List<Double[]> object = data.get(id);
             int index = 0;
             for (Double[] feature : object) {
@@ -32,10 +34,10 @@ public abstract class Common {
                 featureWeight[0] = feature[0] * featureWeights.get(index);
                 featureWeight[1] = feature[1] * featureWeights.get(index);
                 featureWeight[2] = 1 - featureWeight[0] - featureWeight[1];
-                object.add(featureWeight);
+                features.add(featureWeight);
                 index++;
             }
-            weightedData.put(id, object);
+            weightedData.put(id, features);
         }
         return weightedData;
     }
@@ -53,16 +55,17 @@ public abstract class Common {
         for (int objectId = 1;objectId<=data.size();objectId++) {
             String id = Integer.toString(objectId);
             List<Double[]> object = data.get(id);
+            List<Double[]> features = new ArrayList<>();
             int index = 0;
             for (Double[] feature : object) {
                 Double[] featureWeight = new Double[feature.length];
                 featureWeight[0] = feature[0] * fraudWeights.get(index);
                 featureWeight[1] = feature[1] * unFraudWeights.get(index);
                 featureWeight[2] = 1 - featureWeight[0] - featureWeight[1];
-                object.add(featureWeight);
+                features.add(featureWeight);
                 index++;
             }
-            weightedData.put(id, object);
+            weightedData.put(id, features);
         }
         return weightedData;
     }

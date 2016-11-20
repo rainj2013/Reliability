@@ -50,7 +50,7 @@ public class IRE4ThreeEle extends Common implements Cal {
                 m1 = new Matrix(new double[][]{{feature[0]}, {feature[1]}, {feature[2]}});
                 m2 = new Matrix(new double[][]{{label[0]}, {label[1]}, {label[2]}});
                 m3 = m1.minus(m2);
-                double jd = m3.transpose().times(D).times(m3.transpose()).get(0, 0);
+                double jd = m3.transpose().times(D).times(m3).get(0, 0);
                 jd = Math.sqrt(0.5 * jd);
                 jds[featureId] = jd;
             }
@@ -59,7 +59,7 @@ public class IRE4ThreeEle extends Common implements Cal {
 
         //计算所有Object的jd向量的“平均值”
         Double[] jds = new Double[featureSize];
-        Arrays.fill(jds, 0);
+        Arrays.fill(jds, 0d);
         //统计所有向量的和
         for (Double[] objectJds : jDistances) {
             for (int index = 0; index < featureSize; index++) {
@@ -88,7 +88,7 @@ public class IRE4ThreeEle extends Common implements Cal {
             for (Double[] feature : features){
 
                 //做个保留四位小数先吧
-                for(int index = 1; index<feature.length; index++){
+                for(int index = 0; index<feature.length; index++){
                     feature[index] = Double.parseDouble(df.format(feature[index]));
                 }
 
@@ -148,7 +148,7 @@ public class IRE4ThreeEle extends Common implements Cal {
 
         //计算所有Object的jd向量的“平均值”
         Double[] jds = new Double[featureSize];
-        Arrays.fill(jds, 0);
+        Arrays.fill(jds, 0d);
         //统计所有向量的和
         for (Double[] objectJds : dDistances) {
             for (int index = 0; index < featureSize; index++) {
@@ -205,7 +205,7 @@ public class IRE4ThreeEle extends Common implements Cal {
         List<Double[]> labels = new ArrayList<>();
         for (int i = 0; i<label.size(); i++){
             Double[] doubles = new Double[3];
-            Arrays.fill(doubles, 0);
+            Arrays.fill(doubles, 0d);
             if(label.get(i)==1){
                 doubles[0] = 1d;
             }else{

@@ -48,7 +48,7 @@ public class DistanceFitnessCal extends Common implements FitnessCal {
 
     private Map<String, List<Double[]>> switchData(Map<String, Double[]> data){
         Map<String, List<Double[]>> result = new HashMap<>();
-        for (int objectId = 1; objectId<data.size(); objectId++){
+        for (int objectId = 1; objectId<=data.size(); objectId++){
             String id = Integer.toString(objectId);
             List<Double[]> list = new ArrayList<>();
             list.add(data.get(id));
