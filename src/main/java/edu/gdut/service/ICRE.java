@@ -96,7 +96,7 @@ public class ICRE extends CRE {
             fraudWeights.add(weights[0]);
             unFraudWeights.add(weights[1]);
         }
-        weightedData(testData,fraudWeights, unFraudWeights);
-        return dsFuse(testData);
+        Map<String, List<Double[]>> weightedTestData = weightedData(testData,fraudWeights, unFraudWeights);
+        return dsFuse(weightedTestData);
     }
 }

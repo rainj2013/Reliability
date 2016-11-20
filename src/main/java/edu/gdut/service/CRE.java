@@ -128,8 +128,8 @@ public class CRE extends Common implements Cal {
     public Map<String, Double[]> cal(Map<String, List<Double[]>> trainingData, List<Integer> label,
                                      Map<String, List<Double[]>> testData) {
         List<Double> optimalWeights = optimalWeights(trainingData, label);
-        weightedData(testData, optimalWeights);
-        Map<String, Double[]> result = dsFuse(testData);
+        Map<String, List<Double[]>> weightedTestData = weightedData(testData, optimalWeights);
+        Map<String, Double[]> result = dsFuse(weightedTestData);
         return result;
     }
 }

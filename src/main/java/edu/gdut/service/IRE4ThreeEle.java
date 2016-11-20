@@ -3,7 +3,6 @@ package edu.gdut.service;
 import Jama.Matrix;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -11,11 +10,16 @@ import java.util.*;
  * Author:  rainj2013
  * Email:  yangyujian25@gmail.com
  * Date:  16-11-19 下午3:41
- *
  * @Description IRE算法在3个焦元的情况下的运用
  */
 @Service
 public class IRE4ThreeEle extends Common implements Cal {
+
+    private static double threshold = 0.81;
+    public void setThreshold(double threshold) {
+        IRE4ThreeEle.threshold = threshold;
+    }
+
     /**
      * @param labels       训练集标签
      * @param trainingData 训练集数据
@@ -23,13 +27,7 @@ public class IRE4ThreeEle extends Common implements Cal {
      * @Description 计算 Training数据集中所有feature与其Label的Jousselme距离(JD)，每个feature对应一个jd，所以每个Object对应
      * 一个JD向量
      */
-
-    private static double threshold = 0.81;
-    public void setThreshold(double threshold) {
-        IRE4ThreeEle.threshold = threshold;
-    }
-
-    private List<Double> jDistance(List<Double[]> labels, Map<String, List<Double[]>> trainingData) {
+    List<Double> jDistance(List<Double[]> labels, Map<String, List<Double[]>> trainingData) {
         List<Double> jDistance = new ArrayList<>();
 
         //计算每个feature与label的jd
@@ -80,7 +78,7 @@ public class IRE4ThreeEle extends Common implements Cal {
      * @Description 计算数据集的决策
      * @param data 数据集
      */
-    private void decision(Map<String, List<Double[]>> data){
+    void decision(Map<String, List<Double[]>> data){
         for (int objectId = 1; objectId<=data.size(); objectId++){
             List<Double[]> features = data.get(Integer.toString(objectId));
             DecimalFormat df = new DecimalFormat("######0.0000");
@@ -118,7 +116,7 @@ public class IRE4ThreeEle extends Common implements Cal {
         }
     }
 
-    private List<Double> dDistance(List<Double[]> labels, Map<String, List<Double[]>> trainingData){
+    List<Double> dDistance(List<Double[]> labels, Map<String, List<Double[]>> trainingData){
         List<Double> dDistance = new ArrayList<>();
 
         //计算每个feature与label的jd
@@ -160,7 +158,7 @@ public class IRE4ThreeEle extends Common implements Cal {
         return dDistance;
     }
 
-    private List<Double> featureWeights(List<Double> dd, List<Double> jd){
+    List<Double> featureWeights(List<Double> dd, List<Double> jd){
         List<Double> discountingFactor = new ArrayList<>();
         for (int i = 0; i < dd.size(); i++){
             discountingFactor.add(0.5*(dd.get(i)+jd.get(i)));
@@ -195,11 +193,11 @@ public class IRE4ThreeEle extends Common implements Cal {
         //Step4： 利用两种距离计算对应的 featureWeights， 公式如下： 其中阈值为 0.81(可调节)
         List<Double> featureWeights = featureWeights(dd, jd);
         //Step5： 利用 featureWeights 对 test 数据集加权， 并计算 DS 合成结果
-        weightedData(testData, featureWeights);
-        return dsFuse(testData);
+        Map<String, List<Double[]>> weightedTestData = weightedData(testData, featureWeights);
+        return dsFuse(weightedTestData);
     }
 
-    private List<Double[]> labelsSwitch(List<Integer> label){
+    List<Double[]> labelsSwitch(List<Integer> label){
         List<Double[]> labels = new ArrayList<>();
         for (int i = 0; i<label.size(); i++){
             Double[] doubles = new Double[3];

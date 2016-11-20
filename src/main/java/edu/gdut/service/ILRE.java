@@ -33,8 +33,8 @@ public class ILRE extends IRE {
         List<Double> unFraudWeight = featureWeights(unFraudAUC);//各个feature的unFraud焦元的权重
 
         //Step3： 利用 fraud、 unFraud 焦元的权重对 test 数据集加权， 并计算DS合成结果
-        weightedData(testData, fraudWeight, unFraudWeight);//利用fraud、 unFraud焦元的权重对test数据集加权
-        Map<String,Double[]> result = dsFuse(testData);//DS合成
+        Map<String, List<Double[]>> weightedTestData = weightedData(testData, fraudWeight, unFraudWeight);//利用fraud、 unFraud焦元的权重对test数据集加权
+        Map<String,Double[]> result = dsFuse(weightedTestData);//DS合成
 
         return result;
     }

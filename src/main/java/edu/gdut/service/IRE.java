@@ -50,8 +50,8 @@ public class IRE extends Common implements Cal {
     public Map<String,Double[]> cal(Map<String,List<Double[]>> trainingData, List<Integer> label, Map<String,List<Double[]>> testData){
         List<Double> aucList = aUC.auc(trainingData, label, 0);
         List<Double> featureWeights = featureWeights(aucList);
-        weightedData(testData, featureWeights);
-        Map<String,Double[]> dsResult = dsFuse(testData);
+        Map<String, List<Double[]>> weightedTestData = weightedData(testData, featureWeights);
+        Map<String,Double[]> dsResult = dsFuse(weightedTestData);
         return dsResult;
     }
 }

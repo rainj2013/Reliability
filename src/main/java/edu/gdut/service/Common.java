@@ -15,40 +15,56 @@ import java.util.Map;
 @Service
 public abstract class Common {
     /**
-     * @param Data           数据集
+     * @param data           数据集
      * @param featureWeights 每个feature对应的权重
      * @Description 对数据集进行加权
+     * @return 加权后的数据
      */
-    public void weightedData(Map<String, List<Double[]>> Data, List<Double> featureWeights) {
-        for (Map.Entry<String, List<Double[]>> e : Data.entrySet()) {
-            List<Double[]> object = e.getValue();
+    public Map<String, List<Double[]>> weightedData(Map<String, List<Double[]>> data, List<Double> featureWeights) {
+        Map<String, List<Double[]>> weightedData = new HashMap<>();
+
+        for (int objectId = 1;objectId<=data.size();objectId++) {
+            String id = Integer.toString(objectId);
+            List<Double[]> object = data.get(id);
             int index = 0;
             for (Double[] feature : object) {
-                feature[0] *= featureWeights.get(index);
-                feature[1] *= featureWeights.get(index);
-                feature[2] = 1 - feature[0] - feature[1];
+                Double[] featureWeight = new Double[feature.length];
+                featureWeight[0] = feature[0] * featureWeights.get(index);
+                featureWeight[1] = feature[1] * featureWeights.get(index);
+                featureWeight[2] = 1 - featureWeight[0] - featureWeight[1];
+                object.add(featureWeight);
                 index++;
             }
+            weightedData.put(id, object);
         }
+        return weightedData;
     }
 
     /**
-     * @param Data           数据集
+     * @param data           数据集
      * @param fraudWeights   fraud焦元权重
      * @param unFraudWeights unFraud焦元权重
+     * @return 加权后的数据
      * @Description 给数据集的fraud和unFraud焦元分别加权
      */
-    public void weightedData(Map<String, List<Double[]>> Data, List<Double> fraudWeights, List<Double> unFraudWeights) {
-        for (Map.Entry<String, List<Double[]>> entry : Data.entrySet()) {
-            List<Double[]> object = entry.getValue();
+    public Map<String, List<Double[]>> weightedData(Map<String, List<Double[]>> data, List<Double> fraudWeights,
+                                                    List<Double> unFraudWeights) {
+        Map<String, List<Double[]>> weightedData = new HashMap<>();
+        for (int objectId = 1;objectId<=data.size();objectId++) {
+            String id = Integer.toString(objectId);
+            List<Double[]> object = data.get(id);
             int index = 0;
             for (Double[] feature : object) {
-                feature[0] *= fraudWeights.get(index);
-                feature[1] *= unFraudWeights.get(index);
-                feature[2] = 1 - feature[0] - feature[1];
+                Double[] featureWeight = new Double[feature.length];
+                featureWeight[0] = feature[0] * fraudWeights.get(index);
+                featureWeight[1] = feature[1] * unFraudWeights.get(index);
+                featureWeight[2] = 1 - featureWeight[0] - featureWeight[1];
+                object.add(featureWeight);
                 index++;
             }
+            weightedData.put(id, object);
         }
+        return weightedData;
     }
 
     /**
