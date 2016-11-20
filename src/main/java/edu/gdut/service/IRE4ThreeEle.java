@@ -78,11 +78,13 @@ public class IRE4ThreeEle extends Common implements Cal {
      * @Description 计算数据集的决策
      * @param data 数据集
      */
-    void decision(Map<String, List<Double[]>> data){
+    Map<String, List<Double[]>> decision(Map<String, List<Double[]>> data){
+        Map<String, List<Double[]>> decisions = new HashMap<>();
+        DecimalFormat df = new DecimalFormat("######0.0000");
         for (int objectId = 1; objectId<=data.size(); objectId++){
-            List<Double[]> features = data.get(Integer.toString(objectId));
-            DecimalFormat df = new DecimalFormat("######0.0000");
-
+            String id = Integer.toString(objectId);
+            List<Double[]> features = data.get(id);
+            List<Double[]> object = new ArrayList<>();
             for (Double[] feature : features){
 
                 //做个保留四位小数先吧
@@ -105,15 +107,17 @@ public class IRE4ThreeEle extends Common implements Cal {
                     else if(feature[index].equals(feature[maxIndex]))
                         maxIndex = -1;
                 }
-
+                Double[] dession = new Double[feature.length];
                 //处理决策值
-                Arrays.fill(feature, 0d);
+                Arrays.fill(dession, 0d);
                 if (maxIndex!=-1){
-                    feature[maxIndex] = 1d;
+                    dession[maxIndex] = 1d;
                 }
-
+                object.add(dession);
             }
+            decisions.put(id, object);
         }
+        return decisions;
     }
 
     List<Double> dDistance(List<Double[]> labels, Map<String, List<Double[]>> trainingData){
@@ -187,9 +191,9 @@ public class IRE4ThreeEle extends Common implements Cal {
         //Step1： 计算 Training 数据集中所有 feature 与其 Label 的 Jousselme 距离(JD)
         List<Double> jd = jDistance(labels, trainingData);
         //Step2： Training 数据集处理， 得到 Training 数据的决策
-        decision(trainingData);
+        Map<String, List<Double[]>> decisions = decision(trainingData);
         //Step3： 根据 Training 数据的决策， 计算 Training 数据集中所有 feature 与其 Label 的决策距离(DD)
-        List<Double> dd = dDistance(labels, trainingData);
+        List<Double> dd = dDistance(labels, decisions);
         //Step4： 利用两种距离计算对应的 featureWeights， 公式如下： 其中阈值为 0.81(可调节)
         List<Double> featureWeights = featureWeights(dd, jd);
         //Step5： 利用 featureWeights 对 test 数据集加权， 并计算 DS 合成结果
