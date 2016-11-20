@@ -27,7 +27,7 @@ public class IRE4ThreeEle extends Common implements Cal {
      * @Description 计算 Training数据集中所有feature与其Label的Jousselme距离(JD)，每个feature对应一个jd，所以每个Object对应
      * 一个JD向量
      */
-    List<Double> jDistance(List<Double[]> labels, Map<String, List<Double[]>> trainingData) {
+    public List<Double> jDistance(List<Double[]> labels, Map<String, List<Double[]>> trainingData) {
         List<Double> jDistance = new ArrayList<>();
 
         //计算每个feature与label的jd
@@ -78,7 +78,7 @@ public class IRE4ThreeEle extends Common implements Cal {
      * @Description 计算数据集的决策
      * @param data 数据集
      */
-    Map<String, List<Double[]>> decision(Map<String, List<Double[]>> data){
+    public Map<String, List<Double[]>> decision(Map<String, List<Double[]>> data){
         Map<String, List<Double[]>> decisions = new HashMap<>();
         DecimalFormat df = new DecimalFormat("######0.0000");
         for (int objectId = 1; objectId<=data.size(); objectId++){
@@ -120,7 +120,7 @@ public class IRE4ThreeEle extends Common implements Cal {
         return decisions;
     }
 
-    List<Double> dDistance(List<Double[]> labels, Map<String, List<Double[]>> trainingData){
+    public List<Double> dDistance(List<Double[]> labels, Map<String, List<Double[]>> trainingData){
         List<Double> dDistance = new ArrayList<>();
 
         //计算每个feature与label的jd
@@ -162,7 +162,7 @@ public class IRE4ThreeEle extends Common implements Cal {
         return dDistance;
     }
 
-    List<Double> featureWeights(List<Double> dd, List<Double> jd){
+    public List<Double> featureWeights(List<Double> dd, List<Double> jd){
         List<Double> discountingFactor = new ArrayList<>();
         for (int i = 0; i < dd.size(); i++){
             discountingFactor.add(0.5*(dd.get(i)+jd.get(i)));
@@ -201,7 +201,7 @@ public class IRE4ThreeEle extends Common implements Cal {
         return dsFuse(weightedTestData);
     }
 
-    List<Double[]> labelsSwitch(List<Integer> label){
+    public List<Double[]> labelsSwitch(List<Integer> label){
         List<Double[]> labels = new ArrayList<>();
         for (int i = 0; i<label.size(); i++){
             Double[] doubles = new Double[3];
