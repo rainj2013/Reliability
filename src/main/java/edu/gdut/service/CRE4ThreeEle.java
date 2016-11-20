@@ -4,7 +4,6 @@ import edu.gdut.service.GA.*;
 import edu.gdut.util.ArraysUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,68 +11,29 @@ import java.util.*;
 /**
  * Author:  rainj2013
  * Email:  yangyujian25@gmail.com
- * Date:  16-11-8
+ * Date:  16-11-20 下午8:24
  */
 @Service
-public class CRE extends Common implements Cal {
+public class CRE4ThreeEle extends Common implements Cal{
     protected Logger log = Logger.getLogger(this.getClass());
 
-    @Qualifier("IRE")
     @Autowired
-    protected IRE ire;
-    @Autowired
-    protected AUC aUC;
-    //下面数据的线程安全先不做了，暂时没必要
+    private IRE4ThreeEle ire4ThreeEle;
+
     private int genes = 7;//基因（feature）个数
     private int geneLength = 14;//单个基因转成二进制后的长度，保留4位有效数字的话，2^14够存，所以就14位吧
     private int initPopSize = 40;//初始化种群的个体数
     private int maxGenerationCount = 500;//遗传算法计算代数
 
-    /**
-     * @param genes 基因个数
-     * @Description 设置基因（feature）个数
-     */
-    public void setGenes(int genes) {
-        this.genes = genes;
-    }
-
-    /**
-     * @param geneLength 单个基因转成二进制后的长度
-     * @Description 设置单个基因转成二进制后的长度
-     */
-    public void setGeneLength(int geneLength) {
-        this.geneLength = geneLength;
-    }
-
-    /**
-     * @param initPopSize 初始化种群的个体数
-     * @Description 设置初始化种群的个体数
-     */
-    public void setInitPopSize(int initPopSize) {
-        this.initPopSize = initPopSize;
-    }
-
-    /**
-     * @param maxGenerationCount 遗传算法计算代数
-     * @Description 设置遗传算法计算代数
-     */
-    public void setMaxGenerationCount(int maxGenerationCount) {
-        this.maxGenerationCount = maxGenerationCount;
-    }
-
-    /**
-     * @param trainingData 训练集数据
-     * @param label        训练集标签
-     * @return 最佳权重
-     * @Description 对Training数据集分别使用随机产生的权重、 IRE方法产生的权重作初始权重，运用遗传算法分别得到feature的最优权重
-     */
-    public List<Double> optimalWeights(Map<String, List<Double[]>> trainingData, List<Integer> label) {
-        //计算训练集每个feature的fraud焦元的auc值
-        final List<Double> aucList = aUC.auc(trainingData, label, 0);
-        //IRE方法计算每个feature的权重
-        final List<Double> ireFeatureWeights = ire.featureWeights(aucList);
+    private List<Double> optimalWeights(Map<String, List<Double[]>> trainingData, List<Integer> label){
+        //用IRE方法产生初始权重
+        List<Double[]> labels = ire4ThreeEle.labelsSwitch(label);
+        List<Double> jds = ire4ThreeEle.jDistance(labels, trainingData);
+        Map<String, List<Double[]>> decisions = ire4ThreeEle.decision(trainingData);
+        List<Double> dds = ire4ThreeEle.dDistance(labels, decisions);
+        List<Double> ireFeatureWeights = ire4ThreeEle.featureWeights(dds, jds);
         //创建适应度计算类
-        FitnessCal fitnessCal = new AucFitnessCal(geneLength, trainingData, label, aUC);
+        FitnessCal fitnessCal = new DistanceFitnessCal(geneLength, trainingData, label, ire4ThreeEle);
         //设置适应度计算类
         Individual.setFitnessCal(fitnessCal);
         //设置总基因长度
@@ -90,8 +50,8 @@ public class CRE extends Common implements Cal {
         int generationCount = 0;
         while (generationCount < maxGenerationCount) {
             myPop = GA.evolvePopulation(myPop);
-            pList.add(myPop);
             generationCount++;
+            pList.add(myPop);
             log.info("遗传算法正在运算第"+generationCount+"代");
         }
         //倒序排
@@ -99,6 +59,7 @@ public class CRE extends Common implements Cal {
         Population pop = pList.get(0);
         Individual individual = pop.getFittest();
         byte[] genes = individual.getGenes();
+        //取出最优权重
         List<Double> optimalWeights = new ArrayList<>();
         for (int i = 0; i < genes.length; i += geneLength) {
             byte[] gene = Arrays.copyOfRange(genes, i, i + geneLength);
@@ -108,18 +69,12 @@ public class CRE extends Common implements Cal {
         return optimalWeights;
     }
 
-    /**
-     * @param trainingData 训练集数据
-     * @param label        训练集标签
-     * @param testData     测试集
-     * @return DS合成结果
-     * @Description 利用 feature 的最优权重对 test 数据集加权， 并计算 DS 合成结果
-     */
+    @Override
     public Map<String, Double[]> cal(Map<String, List<Double[]>> trainingData, List<Integer> label,
                                      Map<String, List<Double[]>> testData) {
         List<Double> optimalWeights = optimalWeights(trainingData, label);
         Map<String, List<Double[]>> weightedTestData = weightedData(testData, optimalWeights);
-        Map<String, Double[]> result = dsFuse(weightedTestData);
-        return result;
+        Map<String, Double[]> dsResult = dsFuse(weightedTestData);
+        return dsResult;
     }
 }
