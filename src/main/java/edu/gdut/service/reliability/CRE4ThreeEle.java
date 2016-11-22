@@ -1,5 +1,6 @@
-package edu.gdut.service;
+package edu.gdut.service.reliability;
 
+import edu.gdut.service.Cal;
 import edu.gdut.service.GA.*;
 import edu.gdut.util.ArraysUtil;
 import org.apache.log4j.Logger;
@@ -14,7 +15,7 @@ import java.util.*;
  * Date:  16-11-20 下午8:24
  */
 @Service
-public class CRE4ThreeEle extends Common implements Cal{
+public class CRE4ThreeEle extends Common implements Cal {
     protected Logger log = Logger.getLogger(this.getClass());
 
     @Autowired

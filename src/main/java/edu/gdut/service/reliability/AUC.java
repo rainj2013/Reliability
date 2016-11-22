@@ -1,4 +1,4 @@
-package edu.gdut.service;
+package edu.gdut.service.reliability;
 
 import edu.gdut.domain.AUCBean;
 import org.springframework.stereotype.Service;

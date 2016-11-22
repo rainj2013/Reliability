@@ -1,4 +1,4 @@
-package edu.gdut.service;
+package edu.gdut.service.reliability;
 
 import edu.gdut.service.DS.EvidenceDS;
 import org.springframework.stereotype.Service;

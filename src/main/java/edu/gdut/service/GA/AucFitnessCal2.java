@@ -1,7 +1,7 @@
 package edu.gdut.service.GA;
 
-import edu.gdut.service.AUC;
-import edu.gdut.service.Common;
+import edu.gdut.service.reliability.AUC;
+import edu.gdut.service.reliability.Common;
 import edu.gdut.util.ArraysUtil;
 
 import java.util.ArrayList;

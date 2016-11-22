@@ -1,6 +1,7 @@
-package edu.gdut.service;
+package edu.gdut.service.reliability;
 
 import edu.gdut.service.GA.*;
+import edu.gdut.service.reliability.CRE;
 import edu.gdut.util.ArraysUtil;
 import org.springframework.stereotype.Service;
 

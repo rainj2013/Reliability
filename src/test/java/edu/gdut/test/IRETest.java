@@ -1,7 +1,7 @@
 package edu.gdut.test;
 
-import edu.gdut.service.AUC;
-import edu.gdut.service.IRE;
+import edu.gdut.service.reliability.AUC;
+import edu.gdut.service.reliability.IRE;
 import edu.gdut.util.XlsUtil;
 import jxl.read.biff.BiffException;
 import org.junit.Test;

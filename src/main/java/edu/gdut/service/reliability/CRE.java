@@ -1,5 +1,6 @@
-package edu.gdut.service;
+package edu.gdut.service.reliability;
 
+import edu.gdut.service.Cal;
 import edu.gdut.service.GA.*;
 import edu.gdut.util.ArraysUtil;
 import org.apache.log4j.Logger;

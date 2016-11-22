@@ -1,6 +1,7 @@
-package edu.gdut.service;
+package edu.gdut.service.reliability;
 
 import Jama.Matrix;
+import edu.gdut.service.Cal;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
