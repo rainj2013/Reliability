@@ -44,6 +44,10 @@ public class CalService {
     @Autowired
     private CRE4ThreeEle cre4ThreeEle;
 
+    private static final int CALING = 0;
+    private static final int COMPLETE = 0;
+    private static final int ERROR =2;
+
     private static ExecutorService executorService;
 
     static {
@@ -65,7 +69,7 @@ public class CalService {
         }
         Task task = null;
         CalTask calTask = new CalTask(StringUtil.randomString(),dataFile, remark, algoName,
-                new Timestamp(System.currentTimeMillis()), 0);
+                new Timestamp(System.currentTimeMillis()), CALING);
         switch (algoName) {
             case "IRE":
                 task = new Task(iRE, trainingData, label, testData, calTask);
@@ -119,11 +123,11 @@ public class CalService {
                 XlsUtil.writeXls(out, result);
             } catch (Exception e) {
                 e.printStackTrace();
-                calTask.setStatus(2);
+                calTask.setStatus(ERROR);
                 calTask.setFinTime(new Timestamp(System.currentTimeMillis()));
                 calTaskMapper.update(calTask);
             }
-            calTask.setStatus(1);
+            calTask.setStatus(COMPLETE);
             calTask.setResultFile(fileName);
             calTask.setFinTime(new Timestamp(System.currentTimeMillis()));
             calTaskMapper.update(calTask);

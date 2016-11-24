@@ -55,22 +55,19 @@ public class AUC {
                 features.add(new AUCBean( featureValues[0], featureValues[1], label.get(objectId - 1) == 1));
             }
             //按照焦元的值进行排序
-            features.sort(new Comparator<AUCBean>() {
-                @Override
-                public int compare(AUCBean o1, AUCBean o2) {
-                    if(element == 0){
-                        if (o1.getFraud() > o2.getFraud())
-                            return 1;
-                        else if (o1.getFraud() < o2.getFraud())
-                            return -1;
-                        else return 0;
-                    }else{
-                        if (o1.getUnFraud() > o2.getUnFraud())
-                            return 1;
-                        else if (o1.getUnFraud() < o2.getUnFraud())
-                            return -1;
-                        else return 0;
-                    }
+            features.sort((o1, o2) -> {
+                if(element == 0){
+                    if (o1.getFraud() > o2.getFraud())
+                        return 1;
+                    else if (o1.getFraud() < o2.getFraud())
+                        return -1;
+                    else return 0;
+                }else{
+                    if (o1.getUnFraud() > o2.getUnFraud())
+                        return 1;
+                    else if (o1.getUnFraud() < o2.getUnFraud())
+                        return -1;
+                    else return 0;
                 }
             });
 

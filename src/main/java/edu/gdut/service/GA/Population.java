@@ -6,7 +6,7 @@ import java.util.List;
  * Email:  yangyujian25@gmail.com
  * Date:  16-11-8
  */
-public class Population {
+public class Population implements Comparable<Population>{
     Individual[] individuals;
 
     // 创建一个随机基因的种群
@@ -53,5 +53,15 @@ public class Population {
 
     public void saveIndividual(int index, Individual indiv) {
         individuals[index] = indiv;
+    }
+
+    @Override
+    public int compareTo(Population o) {
+        if (getFittest().getFitness()>o.getFittest().getFitness())
+            return 1;
+        else if (getFittest().getFitness()<o.getFittest().getFitness())
+            return -1;
+        else
+            return 0;
     }
 }

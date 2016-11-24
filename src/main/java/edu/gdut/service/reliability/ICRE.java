@@ -1,7 +1,6 @@
 package edu.gdut.service.reliability;
 
 import edu.gdut.service.GA.*;
-import edu.gdut.service.reliability.CRE;
 import edu.gdut.util.ArraysUtil;
 import org.springframework.stereotype.Service;
 
@@ -59,14 +58,7 @@ public class ICRE extends CRE {
             generationCount++;
         }
         //倒序排
-        Collections.sort(pList, new Comparator<Population>() {
-            @Override
-            public int compare(Population o1, Population o2) {
-                if (o1.getFittest().getFitness() > o2.getFittest().getFitness())
-                    return -1;
-                return 1;
-            }
-        });
+        Collections.sort(pList, Population::compareTo);
         Population pop = pList.get(0);
         Individual individual = pop.getFittest();
         byte[] genes = individual.getGenes();
