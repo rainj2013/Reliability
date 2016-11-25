@@ -80,7 +80,7 @@ public class CalService {
             case "ICRE":
                 task = new Task(iCRE, trainingData, label, testData, calTask);
                 break;
-            case "ILRE":
+            case "IIRE":
                 task = new Task(iLRE, trainingData, label, testData, calTask);
                 break;
             case "IRE3":
