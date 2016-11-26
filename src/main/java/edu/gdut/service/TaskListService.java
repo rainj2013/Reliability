@@ -2,9 +2,11 @@ package edu.gdut.service;
 
 import edu.gdut.dao.CalTaskMapper;
 import edu.gdut.domain.CalTask;
+import edu.gdut.util.XlsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -19,5 +21,10 @@ public class TaskListService {
 
     public List<CalTask> top(int value){
         return calTaskMapper.findTop(value);
+    }
+
+    public List<Double[]> check(String id) throws Exception{
+        String filePath = "xls" + File.separator + id + ".xls";
+        return XlsUtil.read(filePath, 0);
     }
 }

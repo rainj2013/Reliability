@@ -21,7 +21,12 @@ import jxl.write.Number;
  */
 public class XlsUtil {
 
-    private static List<Double[]> read(InputStream ins, int sheetIndex) throws IOException, BiffException {
+    public static List<Double[]> read(String filePath, int sheetIndex) throws IOException, BiffException {
+        InputStream ins = new FileInputStream(filePath);
+        return read(ins, sheetIndex);
+    }
+
+    public static List<Double[]> read(InputStream ins, int sheetIndex) throws IOException, BiffException {
         // 创建一个list 用来存储读取的内容
         List<Double[]> list = new ArrayList<>();
         Workbook rwb;

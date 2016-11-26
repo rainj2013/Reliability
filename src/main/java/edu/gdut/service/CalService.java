@@ -45,7 +45,7 @@ public class CalService {
     private CRE4ThreeEle cre4ThreeEle;
 
     private static final int CALING = 0;
-    private static final int COMPLETE = 0;
+    private static final int COMPLETE = 1;
     private static final int ERROR =2;
 
     private static ExecutorService executorService;
