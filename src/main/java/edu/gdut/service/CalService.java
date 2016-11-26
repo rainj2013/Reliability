@@ -34,8 +34,8 @@ public class CalService {
     @Qualifier("CRE")
     private CRE cRE;
     @Autowired
-    @Qualifier("ILRE")
-    private ILRE iLRE;
+    @Qualifier("IIRE")
+    private IIRE IIRE;
     @Autowired
     @Qualifier("ICRE")
     private ICRE iCRE;
@@ -81,7 +81,7 @@ public class CalService {
                 task = new Task(iCRE, trainingData, label, testData, calTask);
                 break;
             case "IIRE":
-                task = new Task(iLRE, trainingData, label, testData, calTask);
+                task = new Task(IIRE, trainingData, label, testData, calTask);
                 break;
             case "IRE3":
                 task = new Task(ire4ThreeEle, trainingData, label, testData, calTask);
