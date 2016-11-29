@@ -22,9 +22,9 @@ public class IRETest {
         IRE ire = new IRE();
         AUC auc = new AUC();
         try {
-            List<Double> aucList = auc.auc(XlsUtil.readData("/home/rainj2013/桌面/test.xls", 0, 7), XlsUtil.readLabel("/home/rainj2013/桌面/test.xls", 1),0);
+            List<Double> aucList = auc.auc(XlsUtil.readData("/home/rainj2013/桌面/test.xls", 5, 1), XlsUtil.readLabel("/home/rainj2013/桌面/test.xls", 3),0);
             List<Double> featureWeights = ire.featureWeights(aucList);
-            Map<String ,List<Double[]>> map = XlsUtil.readData("/home/rainj2013/桌面/test.xls", 2, 7);
+            Map<String ,List<Double[]>> map = XlsUtil.readData("/home/rainj2013/桌面/test.xls", 5, 1);
             ire.weightedData(map, featureWeights);
             Map<String,Double[]> dsResult = ire.dsFuse(map);
             for (int i = 1; i<=1401; i++){
