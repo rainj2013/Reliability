@@ -76,7 +76,7 @@ public class XlsUtil {
 
         for(int objectId = 1;objectId<=list.size()/featureSize;objectId++){
             List<Double[]> object = new ArrayList<>();
-            for (int rowNum = (objectId-1)*7; rowNum<(objectId-1)*7+featureSize;rowNum++){
+            for (int rowNum = (objectId-1)*featureSize; rowNum<objectId*featureSize;rowNum++){
                 Double[] row = list.get(rowNum);
                 object.add(new Double[]{row[2],row[3],row[4]});
             }
