@@ -71,14 +71,28 @@ public class AUC {
                 }
             });
 
-            int zheng = 0;//正样本的排序之和
+            Map<Double, Integer[]> scoresCount = new HashMap<>();
+            for (int i = features.size() - 1; i >= 0; i--) {
+                AUCBean aucBean = features.get(i);
+                double fraud = aucBean.getFraud();
+                if (!scoresCount.containsKey(fraud)){
+                    scoresCount.put(fraud, new Integer[]{1,i+1});
+                }else {
+                    Integer[] score = scoresCount.get(fraud);
+                    score[0] = score[0] + 1;
+                    score[1] = score[1] + i +1;
+                }
+            }
+
+            double zheng = 0;//正样本的排序之和
             int count = 0;//正样本个数
             //AUC=((正样本的倒序排序序数之和)-M*(M+1)/2)/(M*N)
 
             for (int i = features.size() - 1; i >= 0; i--) {
                 AUCBean aucBean = features.get(i);
                 if ((element==0)==aucBean.isLabel()) {//对于unFraud焦元来说，正样本是标记为unFraud的
-                    zheng += (i + 1);
+                    Integer[] score = scoresCount.get(aucBean.getFraud());
+                    zheng += (score[1]/score[0]);
                     count++;
                 }
             }
