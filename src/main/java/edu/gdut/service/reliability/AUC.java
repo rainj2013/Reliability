@@ -49,7 +49,7 @@ public class AUC {
             //迭代feature，计算每个feature的AUC
             List<AUCBean> features = new ArrayList<>();
 
-            for (int objectId = 1; objectId < objectSize + 1; objectId++) {
+            for (int objectId = 1; objectId <= objectSize; objectId++) {
                 //取每个object中其中一个feature对应焦元的值
                 featureValues = map.get(Integer.toString(objectId)).get(featureId - 1);
                 features.add(new AUCBean( featureValues[0], featureValues[1], label.get(objectId - 1) == 1));
@@ -75,10 +75,12 @@ public class AUC {
             for (int i = features.size() - 1; i >= 0; i--) {
                 AUCBean aucBean = features.get(i);
                 double fraud = aucBean.getFraud();
-                if (!scoresCount.containsKey(fraud)){
-                    scoresCount.put(fraud, new Integer[]{1,i+1});
+                double unFraud = aucBean.getUnFraud();
+                double scoreValue = element==0?fraud:unFraud;
+                if (!scoresCount.containsKey(scoreValue)){
+                    scoresCount.put(scoreValue, new Integer[]{1,i+1});
                 }else {
-                    Integer[] score = scoresCount.get(fraud);
+                    Integer[] score = scoresCount.get(scoreValue);
                     score[0] = score[0] + 1;
                     score[1] = score[1] + i +1;
                 }
@@ -91,12 +93,12 @@ public class AUC {
             for (int i = features.size() - 1; i >= 0; i--) {
                 AUCBean aucBean = features.get(i);
                 if ((element==0)==aucBean.isLabel()) {//对于unFraud焦元来说，正样本是标记为unFraud的
-                    Integer[] score = scoresCount.get(aucBean.getFraud());
+                    Integer[] score=element==0?scoresCount.get(aucBean.getFraud()):scoresCount.get(aucBean.getUnFraud());
                     zheng += (score[1]/score[0]);
                     count++;
                 }
             }
-            double featureAUC = (double) (zheng - count * (count + 1) / 2) / (count * (objectSize - count));
+            double featureAUC = (zheng - count * (count + 1) / 2) / (count * (objectSize - count));
             aucList.add(featureAUC);
         }
         return aucList;
