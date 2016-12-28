@@ -24,10 +24,11 @@ public class AUC {
      */
     public Double auc(List<Integer> label ,Map<String, Double[]> map, int element) {
         Map<String, List<Double[]>> temp = new HashMap<>();
-        for(Map.Entry<String, Double[]> e: map.entrySet()){
+        for(int i = 1; i<=map.size(); i++){
+            String key = Integer.toString(i);
             List<Double[]> list = new ArrayList<>();
-            list.add(e.getValue());
-            temp.put(e.getKey(), list);
+            list.add(map.get(key));
+            temp.put(key, list);
         }
         List<Double> result = auc(temp, label, element);
         return result.get(0);

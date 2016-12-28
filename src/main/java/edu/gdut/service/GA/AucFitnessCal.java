@@ -42,9 +42,9 @@ public class AucFitnessCal extends Common implements FitnessCal{
         //对训练数据集加权
         Map<String,List<Double[]>> weightedTrainingData = weightedData(trainingData, featureWeights);
         //DS合成
-        Map<String,Double[]> dSResult = dsFuse(weightedTrainingData);
+        Map<String,Double[]> dsResult = dsFuse(weightedTrainingData);
         //求fraud焦元的AUC值
-        double fitness = aUC.auc(label, dSResult, 0);
+        double fitness = aUC.auc(label, dsResult, 0);
 
         return fitness;
     }

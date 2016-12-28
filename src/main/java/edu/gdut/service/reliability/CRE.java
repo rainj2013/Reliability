@@ -73,6 +73,11 @@ public class CRE extends Common implements Cal {
         final List<Double> aucList = aUC.auc(trainingData, label, 0);
         //IRE方法计算每个feature的权重
         final List<Double> ireFeatureWeights = ire.featureWeights(aucList);
+        //ireFeatureWeights = Arrays.asList(0.349474,0.143842,0.168666,0.186531,0.219134,0.9965085,0.197247);
+        //fitness:0.868242
+        //[0.2628, 0.10145, 0.15, 0.10668, 0.1533, 0.8182, 0.2186]
+        //fitness:0.8698548922056385
+
         //创建适应度计算类
         FitnessCal fitnessCal = new AucFitnessCal(geneLength, trainingData, label, aUC);
         //设置适应度计算类
@@ -87,18 +92,15 @@ public class CRE extends Common implements Cal {
         }
         Population myPop = new Population(initPop);
         //开始产生下一代，并进行进化
-        List<Population> pList = new ArrayList<>();
         int generationCount = 0;
         while (generationCount < maxGenerationCount) {
             myPop = GA.evolvePopulation(myPop);
-            pList.add(myPop);
             generationCount++;
             log.info("遗传算法正在运算第"+generationCount+"代");
         }
-        //倒序排
-        Collections.sort(pList, new PopComparator(true));
-        Population pop = pList.get(0);
-        Individual individual = pop.getFittest();
+
+        log.info("适应度：" + myPop.getFittest().getFitness());
+        Individual individual = myPop.getFittest();
         byte[] genes = individual.getGenes();
         List<Double> optimalWeights = new ArrayList<>();
         for (int i = 0; i < genes.length; i += geneLength) {
@@ -106,6 +108,7 @@ public class CRE extends Common implements Cal {
             double weight = ArraysUtil.toDouble(gene);
             optimalWeights.add(weight);
         }
+        log.info("最优权重基因组：" + optimalWeights);
         return optimalWeights;
     }
 
